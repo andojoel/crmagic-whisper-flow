@@ -40,8 +40,8 @@ export const mockCampaigns: Campaign[] = [
     performance: 'good',
     hasAiSuggestion: true,
     versions: {
-      v1: { conversionRate: 2.6, clickThroughRate: 3.9, revenue: 84500 },
-      v2: { conversionRate: 2.1, clickThroughRate: 4.6, revenue: 79200 },
+      v1: { conversionRate: 2.1, clickThroughRate: 3.9, revenue: 79200 },
+      v2: { conversionRate: 2.6, clickThroughRate: 4.6, revenue: 84500 },
     },
   },
   {
@@ -57,8 +57,8 @@ export const mockCampaigns: Campaign[] = [
     performance: 'average',
     hasAiSuggestion: true,
     versions: {
-      v1: { conversionRate: 1.3, clickThroughRate: 2.0, revenue: 42000 },
-      v2: { conversionRate: 1.1, clickThroughRate: 2.2, revenue: 38500 },
+      v1: { conversionRate: 1.1, clickThroughRate: 2.0, revenue: 38500 },
+      v2: { conversionRate: 1.5, clickThroughRate: 2.4, revenue: 45000 },
     },
   },
   {
@@ -74,8 +74,8 @@ export const mockCampaigns: Campaign[] = [
     performance: 'poor',
     hasAiSuggestion: true,
     versions: {
-      v1: { conversionRate: 0.8, clickThroughRate: 1.4, revenue: 18200 },
-      v2: { conversionRate: 0.6, clickThroughRate: 1.6, revenue: 15800 },
+      v1: { conversionRate: 0.6, clickThroughRate: 1.4, revenue: 15800 },
+      v2: { conversionRate: 0.9, clickThroughRate: 1.8, revenue: 20500 },
     },
   },
   {
@@ -91,8 +91,8 @@ export const mockCampaigns: Campaign[] = [
     performance: 'good',
     hasAiSuggestion: true,
     versions: {
-      v1: { conversionRate: 3.2, clickThroughRate: 4.8, revenue: 92000 },
-      v2: { conversionRate: 3.0, clickThroughRate: 5.2, revenue: 88500 },
+      v1: { conversionRate: 3.0, clickThroughRate: 4.8, revenue: 88500 },
+      v2: { conversionRate: 3.4, clickThroughRate: 5.4, revenue: 96000 },
     },
   },
   {
@@ -108,8 +108,8 @@ export const mockCampaigns: Campaign[] = [
     performance: 'good',
     hasAiSuggestion: true,
     versions: {
-      v1: { conversionRate: 2.9, clickThroughRate: 4.3, revenue: 76000 },
-      v2: { conversionRate: 2.7, clickThroughRate: 4.7, revenue: 73500 },
+      v1: { conversionRate: 2.7, clickThroughRate: 4.3, revenue: 73500 },
+      v2: { conversionRate: 3.1, clickThroughRate: 4.9, revenue: 80000 },
     },
   },
   {
@@ -125,8 +125,8 @@ export const mockCampaigns: Campaign[] = [
     performance: 'average',
     hasAiSuggestion: true,
     versions: {
-      v1: { conversionRate: 2.0, clickThroughRate: 3.1, revenue: 54000 },
-      v2: { conversionRate: 1.8, clickThroughRate: 3.3, revenue: 51500 },
+      v1: { conversionRate: 1.8, clickThroughRate: 3.1, revenue: 51500 },
+      v2: { conversionRate: 2.2, clickThroughRate: 3.5, revenue: 58000 },
     },
   },
   {
@@ -142,8 +142,8 @@ export const mockCampaigns: Campaign[] = [
     performance: 'good',
     hasAiSuggestion: true,
     versions: {
-      v1: { conversionRate: 4.3, clickThroughRate: 6.5, revenue: 128000 },
-      v2: { conversionRate: 4.1, clickThroughRate: 7.1, revenue: 124500 },
+      v1: { conversionRate: 4.1, clickThroughRate: 6.5, revenue: 124500 },
+      v2: { conversionRate: 4.6, clickThroughRate: 7.4, revenue: 135000 },
     },
   },
   {
@@ -158,8 +158,8 @@ export const mockCampaigns: Campaign[] = [
     clickThroughRate: 3.6,
     performance: 'average',
     versions: {
-      v1: { conversionRate: 2.2, clickThroughRate: 3.5, revenue: 48000 },
-      v2: { conversionRate: 2.0, clickThroughRate: 3.7, revenue: 45500 },
+      v1: { conversionRate: 2.0, clickThroughRate: 3.5, revenue: 45500 },
+      v2: { conversionRate: 2.4, clickThroughRate: 3.9, revenue: 52000 },
     },
   },
   {
@@ -174,8 +174,8 @@ export const mockCampaigns: Campaign[] = [
     clickThroughRate: 2.8,
     performance: 'average',
     versions: {
-      v1: { conversionRate: 1.5, clickThroughRate: 2.7, revenue: 32000 },
-      v2: { conversionRate: 1.3, clickThroughRate: 2.9, revenue: 29500 },
+      v1: { conversionRate: 1.3, clickThroughRate: 2.7, revenue: 29500 },
+      v2: { conversionRate: 1.7, clickThroughRate: 3.1, revenue: 36000 },
     },
   },
   {
@@ -190,8 +190,8 @@ export const mockCampaigns: Campaign[] = [
     clickThroughRate: 5.4,
     performance: 'good',
     versions: {
-      v1: { conversionRate: 3.6, clickThroughRate: 5.2, revenue: 98000 },
-      v2: { conversionRate: 3.4, clickThroughRate: 5.6, revenue: 95500 },
+      v1: { conversionRate: 3.4, clickThroughRate: 5.2, revenue: 95500 },
+      v2: { conversionRate: 3.8, clickThroughRate: 5.8, revenue: 104000 },
     },
   },
   {
@@ -206,8 +206,8 @@ export const mockCampaigns: Campaign[] = [
     clickThroughRate: 4.1,
     performance: 'good',
     versions: {
-      v1: { conversionRate: 2.8, clickThroughRate: 4.0, revenue: 68000 },
-      v2: { conversionRate: 2.6, clickThroughRate: 4.2, revenue: 65500 },
+      v1: { conversionRate: 2.6, clickThroughRate: 4.0, revenue: 65500 },
+      v2: { conversionRate: 3.0, clickThroughRate: 4.4, revenue: 72000 },
     },
   },
   {
@@ -222,8 +222,8 @@ export const mockCampaigns: Campaign[] = [
     clickThroughRate: 4.8,
     performance: 'good',
     versions: {
-      v1: { conversionRate: 3.1, clickThroughRate: 4.7, revenue: 82000 },
-      v2: { conversionRate: 2.9, clickThroughRate: 4.9, revenue: 79500 },
+      v1: { conversionRate: 2.9, clickThroughRate: 4.7, revenue: 79500 },
+      v2: { conversionRate: 3.3, clickThroughRate: 5.1, revenue: 88000 },
     },
   },
 ];

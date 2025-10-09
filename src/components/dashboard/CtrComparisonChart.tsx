@@ -39,27 +39,27 @@ interface CtrComparisonChartProps {
   defaultTo?: Date;
 }
 
-// Generate mock daily metric data
+// Generate mock daily metric data where Version B is always better
 const generateMockData = (from: Date, to: Date): MetricData[] => {
   const data: MetricData[] = [];
   const current = new Date(from);
   
   while (current <= to) {
-    // Version A
-    const versionABaseCtr = 2.5 + Math.sin(current.getMonth() / 2) * 0.6 + (Math.random() - 0.5) * 0.8;
-    const versionABaseCr = 2.2 + Math.sin(current.getMonth() / 2.2) * 0.5 + (Math.random() - 0.5) * 0.6;
-    const versionAImpressions = Math.floor(8000 + Math.random() * 15000);
+    // Version A (lower performance)
+    const versionABaseCtr = 3.5 + Math.sin(current.getDate() / 5) * 0.4 + (Math.random() - 0.5) * 0.3;
+    const versionABaseCr = 1.8 + Math.sin(current.getDate() / 6) * 0.3 + (Math.random() - 0.5) * 0.2;
+    const versionAImpressions = Math.floor(8000 + Math.random() * 12000);
     const versionAClicks = Math.floor(versionAImpressions * (versionABaseCtr / 100));
     const versionAConversions = Math.floor(versionAClicks * (versionABaseCr / 100));
-    const versionARevenue = versionAConversions * (60 + Math.random() * 50);
+    const versionARevenue = versionAConversions * (60 + Math.random() * 40);
     
-    // Version B
-    const versionBBaseCtr = 3.0 + Math.sin(current.getMonth() / 2.5) * 1.0 + (Math.random() - 0.5) * 1.2;
-    const versionBBaseCr = 2.5 + Math.sin(current.getMonth() / 2.3) * 0.6 + (Math.random() - 0.5) * 0.8;
-    const versionBImpressions = Math.floor(7000 + Math.random() * 17000);
+    // Version B (higher performance - always 15-25% better)
+    const versionBBaseCtr = versionABaseCtr * (1.15 + Math.random() * 0.1);
+    const versionBBaseCr = versionABaseCr * (1.15 + Math.random() * 0.1);
+    const versionBImpressions = Math.floor(8000 + Math.random() * 12000);
     const versionBClicks = Math.floor(versionBImpressions * (versionBBaseCtr / 100));
     const versionBConversions = Math.floor(versionBClicks * (versionBBaseCr / 100));
-    const versionBRevenue = versionBConversions * (65 + Math.random() * 55);
+    const versionBRevenue = versionBConversions * (70 + Math.random() * 50);
     
     data.push({
       date: format(current, 'yyyy-MM-dd'),

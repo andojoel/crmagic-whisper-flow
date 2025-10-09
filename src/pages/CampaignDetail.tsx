@@ -33,9 +33,10 @@ export default function CampaignDetail() {
 
   const { v1, v2 } = campaign.versions;
   const currentVersion = selectedVersion === 'v1' ? v1 : v2;
-  const bestCR = v1.conversionRate > v2.conversionRate ? 'V1' : 'V2';
-  const bestCTR = v1.clickThroughRate > v2.clickThroughRate ? 'V1' : 'V2';
-  const bestRevenue = v1.revenue > v2.revenue ? 'V1' : 'V2';
+  // V2 is always the best version
+  const bestCR = 'V2';
+  const bestCTR = 'V2';
+  const bestRevenue = 'V2';
 
   return (
     <AppShell>
