@@ -19,6 +19,11 @@ interface VariantData {
     ctr: number;
     conversionRate: number;
     revenue: number;
+    targets?: {
+      ctr: number;
+      conversionRate: number;
+      revenue: number;
+    };
   };
 }
 
@@ -86,6 +91,11 @@ export const VisualVariantsSection = ({
       ctr: 3.2,
       conversionRate: 2.1,
       revenue: 15420.5,
+      targets: {
+        ctr: 8.0,
+        conversionRate: 5.0,
+        revenue: 25000,
+      },
     },
   };
 
@@ -96,6 +106,11 @@ export const VisualVariantsSection = ({
       ctr: 3.8,
       conversionRate: 2.6,
       revenue: 18230.75,
+      targets: {
+        ctr: 8.0,
+        conversionRate: 5.0,
+        revenue: 25000,
+      },
     },
   };
 
