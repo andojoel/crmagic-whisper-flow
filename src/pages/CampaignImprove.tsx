@@ -50,10 +50,10 @@ export default function CampaignImprove() {
 
   const [suggestedVersion, setSuggestedVersion] = useState<CampaignVersion>({
     image: campaignSuggestedImage,
-    title: 'Keep your status with the ALL PLUS ibis+ or Voyageur card',
-    description: 'Subscribe now and receive 10 bonus Status Nights – that\'s a real boost to help you reach your goal. Plus, enjoy 20% off stays at selected brands until January 14.',
+    title: '🔥 Last Chance: Keep your Gold status with exclusive bonuses!',
+    description: 'Act now! Get 10 bonus Status Nights PLUS 20% off stays. This limited offer helps you maintain your elite status effortlessly. Don\'t let your benefits expire!',
     buttonPosition: 'bottom',
-    buttonText: 'Discover the card',
+    buttonText: 'Claim My Bonuses Now →',
   });
 
   const [messages, setMessages] = useState<Message[]>([
@@ -230,71 +230,19 @@ Que souhaitez-vous optimiser en premier ?`,
                         </div>
                       </div>
 
-                      {/* Edit Form */}
-                      <div className="space-y-4">
-                        <h4 className="font-heading font-semibold text-sm">Edit Campaign Elements</h4>
-                        
-                        <div className="space-y-3">
+                      {/* Current metrics */}
+                      <div className="p-4 bg-muted/30 rounded-lg border border-border-subtle">
+                        <p className="text-xs text-muted-foreground mb-3 font-medium">Current Performance</p>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
-                            <Label htmlFor="current-title">Title</Label>
-                            <Input
-                              id="current-title"
-                              value={currentVersion.title}
-                              onChange={(e) => setCurrentVersion({ ...currentVersion, title: e.target.value })}
-                            />
+                            <p className="text-muted-foreground">Click-Through Rate</p>
+                            <p className="font-medium text-lg">{campaign.clickThroughRate}%</p>
+                            <p className="text-xs text-muted-foreground">Target: 5.0%</p>
                           </div>
-
                           <div>
-                            <Label htmlFor="current-description">Description</Label>
-                            <Textarea
-                              id="current-description"
-                              value={currentVersion.description}
-                              onChange={(e) => setCurrentVersion({ ...currentVersion, description: e.target.value })}
-                              rows={3}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="current-button-text">Button Text</Label>
-                            <Input
-                              id="current-button-text"
-                              value={currentVersion.buttonText}
-                              onChange={(e) => setCurrentVersion({ ...currentVersion, buttonText: e.target.value })}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="current-button-position">Button Position</Label>
-                            <Select 
-                              value={currentVersion.buttonPosition} 
-                              onValueChange={(value: 'top' | 'center' | 'bottom') => 
-                                setCurrentVersion({ ...currentVersion, buttonPosition: value })
-                              }
-                            >
-                              <SelectTrigger id="current-button-position">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="top">Top</SelectItem>
-                                <SelectItem value="center">Center</SelectItem>
-                                <SelectItem value="bottom">Bottom</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div>
-                            <Label htmlFor="current-image">Image URL</Label>
-                            <div className="flex gap-2">
-                              <Input
-                                id="current-image"
-                                value={currentVersion.image}
-                                onChange={(e) => setCurrentVersion({ ...currentVersion, image: e.target.value })}
-                                placeholder="https://..."
-                              />
-                              <Button variant="outline" size="icon">
-                                <Upload className="h-4 w-4" />
-                              </Button>
-                            </div>
+                            <p className="text-muted-foreground">Conversion Rate</p>
+                            <p className="font-medium text-lg">{campaign.conversionRate}%</p>
+                            <p className="text-xs text-muted-foreground">Target: 5.0%</p>
                           </div>
                         </div>
                       </div>
