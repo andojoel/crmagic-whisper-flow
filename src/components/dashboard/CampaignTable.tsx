@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Search, Calendar, Filter } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +23,13 @@ export function CampaignTable({ campaigns }: CampaignTableProps) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterBy, setFilterBy] = useState('all');
+  const [campaignStates, setCampaignStates] = useState<Record<string, boolean>>(
+    campaigns.reduce((acc, campaign) => ({ ...acc, [campaign.id]: campaign.isOnline }), {})
+  );
+
+  const handleToggleOnline = (campaignId: string, isOnline: boolean) => {
+    setCampaignStates(prev => ({ ...prev, [campaignId]: isOnline }));
+  };
 
   const filteredCampaigns = campaigns.filter((campaign) => {
     const matchesSearch = campaign.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -94,6 +102,7 @@ export function CampaignTable({ campaigns }: CampaignTableProps) {
               <th className="text-left p-4 text-sm font-medium text-muted-foreground">Owner</th>
               <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
               <th className="text-left p-4 text-sm font-medium text-muted-foreground">Performance</th>
+              <th className="text-left p-4 text-sm font-medium text-muted-foreground">Online</th>
               <th className="text-left p-4 text-sm font-medium text-muted-foreground">Action</th>
             </tr>
           </thead>
@@ -129,6 +138,13 @@ export function CampaignTable({ campaigns }: CampaignTableProps) {
                     <span>CTR {campaign.clickThroughRate}%</span>
                     <span className="text-lg ml-1">{performanceEmoji(campaign.performance)}</span>
                   </div>
+                </td>
+                <td className="p-4">
+                  <Switch
+                    checked={campaignStates[campaign.id]}
+                    onCheckedChange={(checked) => handleToggleOnline(campaign.id, checked)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
                 </td>
                 <td className="p-4">
                   <Button

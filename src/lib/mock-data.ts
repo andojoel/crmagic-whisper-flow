@@ -7,6 +7,7 @@ export interface Campaign {
   endDate: string;
   owner: string;
   status: CampaignStatus;
+  isOnline: boolean;
   conversionRate: number;
   clickThroughRate: number;
   performance: 'good' | 'average' | 'poor';
@@ -32,6 +33,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '30 Sep',
     owner: 'Alice Martin',
     status: 'Running',
+    isOnline: true,
     conversionRate: 2.4,
     clickThroughRate: 4.2,
     performance: 'good',
@@ -47,6 +49,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '20 Oct',
     owner: 'Hugo Leroy',
     status: 'Scheduled',
+    isOnline: false,
     conversionRate: 1.2,
     clickThroughRate: 2.1,
     performance: 'average',
@@ -62,6 +65,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '15 Oct',
     owner: 'Judith Perez',
     status: 'Testing',
+    isOnline: true,
     conversionRate: 0.7,
     clickThroughRate: 1.5,
     performance: 'poor',
@@ -77,6 +81,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '25 Oct',
     owner: 'Guillaume N.',
     status: 'Running',
+    isOnline: true,
     conversionRate: 3.1,
     clickThroughRate: 5.0,
     performance: 'good',
@@ -92,6 +97,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '31 Dec',
     owner: 'Sophie Chen',
     status: 'Scheduled',
+    isOnline: false,
     conversionRate: 2.8,
     clickThroughRate: 4.5,
     performance: 'good',
@@ -107,6 +113,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '05 Dec',
     owner: 'Marcus Brown',
     status: 'Testing',
+    isOnline: true,
     conversionRate: 1.9,
     clickThroughRate: 3.2,
     performance: 'average',
@@ -122,6 +129,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '24 Nov',
     owner: 'Emma Wilson',
     status: 'Running',
+    isOnline: true,
     conversionRate: 4.2,
     clickThroughRate: 6.8,
     performance: 'good',
@@ -137,6 +145,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '31 Oct',
     owner: 'Liam Davis',
     status: 'Running',
+    isOnline: true,
     conversionRate: 2.1,
     clickThroughRate: 3.6,
     performance: 'average',
@@ -152,6 +161,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '12 Oct',
     owner: 'Olivia Taylor',
     status: 'Testing',
+    isOnline: false,
     conversionRate: 1.4,
     clickThroughRate: 2.8,
     performance: 'average',
@@ -167,6 +177,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '20 Oct',
     owner: 'Noah Martinez',
     status: 'Running',
+    isOnline: true,
     conversionRate: 3.5,
     clickThroughRate: 5.4,
     performance: 'good',
@@ -182,6 +193,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '15 Oct',
     owner: 'Ava Anderson',
     status: 'Running',
+    isOnline: true,
     conversionRate: 2.7,
     clickThroughRate: 4.1,
     performance: 'good',
@@ -197,6 +209,7 @@ export const mockCampaigns: Campaign[] = [
     endDate: '22 Oct',
     owner: 'Ethan White',
     status: 'Scheduled',
+    isOnline: false,
     conversionRate: 3.0,
     clickThroughRate: 4.8,
     performance: 'good',
