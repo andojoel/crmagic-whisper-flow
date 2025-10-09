@@ -8,50 +8,50 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Background tokens - quiet luxury palette */
-    --background: 0 0% 97%;
-    --background-subtle: 0 0% 96.8%;
-    --foreground: 0 0% 9%;
+    /* Background tokens */
+    --background: 0 0% 100%;
+    --background-subtle: 240 5% 96%;
+    --foreground: 248 53% 22%;
 
     /* Surface tokens */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card-foreground: 248 53% 22%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover-foreground: 248 53% 22%;
 
-    /* Primary - neutral dark */
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    /* Primary - #1e1852 */
+    --primary: 248 53% 22%;
+    --primary-foreground: 0 0% 100%;
 
     /* Secondary - soft neutral */
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 25%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 248 53% 22%;
 
-    /* Muted - subtle grey */
-    --muted: 0 0% 96%;
+    /* Muted - #f4f4f5 */
+    --muted: 240 5% 96%;
     --muted-foreground: 0 0% 45%;
 
-    /* Accent - warm orange */
-    --accent: 24 95% 53%;
-    --accent-foreground: 0 0% 98%;
-    --accent-hover: 24 95% 48%;
+    /* Accent - #068484 for tags and badges */
+    --accent: 180 93% 27%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 180 93% 22%;
 
     /* Performance semantics */
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 98%;
-    --success-subtle: 142 71% 45% / 0.1;
+    --success: 153 75% 27%;
+    --success-foreground: 0 0% 100%;
+    --success-subtle: 140 36% 91%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 98%;
-    --warning-subtle: 38 92% 50% / 0.1;
+    --warning: 36 100% 29%;
+    --warning-foreground: 0 0% 100%;
+    --warning-subtle: 48 94% 93%;
 
-    --danger: 0 84% 60%;
-    --danger-foreground: 0 0% 98%;
-    --danger-subtle: 0 84% 60% / 0.1;
+    --danger: 2 76% 42%;
+    --danger-foreground: 0 0% 100%;
+    --danger-subtle: 357 71% 94%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 2 76% 42%;
+    --destructive-foreground: 0 0% 100%;
 
     /* Borders - ultra subtle */
     --border: 0 0% 90%;
@@ -86,35 +86,35 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 0 0% 9%;
-    --background-subtle: 0 0% 11%;
+    --background: 248 53% 12%;
+    --background-subtle: 248 53% 15%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 11%;
+    --card: 248 53% 15%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 11%;
+    --popover: 248 53% 15%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 248 53% 22%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 15%;
+    --secondary: 240 5% 20%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 15%;
+    --muted: 240 5% 20%;
     --muted-foreground: 0 0% 63%;
 
-    --accent: 24 95% 53%;
-    --accent-foreground: 0 0% 98%;
-    --accent-hover: 24 95% 48%;
+    --accent: 180 93% 27%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 180 93% 22%;
 
-    --success: 142 71% 45%;
-    --warning: 38 92% 50%;
-    --danger: 0 84% 60%;
+    --success: 153 75% 27%;
+    --warning: 36 100% 29%;
+    --danger: 2 76% 42%;
 
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 2 76% 42%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 0 0% 20%;
     --border-subtle: 0 0% 15%;
