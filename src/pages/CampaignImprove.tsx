@@ -54,7 +54,7 @@ export default function CampaignImprove() {
     title: '🎁 Unlock exclusive loyalty rewards on the ALL app',
     description: 'Download the ALL app now and discover your personalized offers. Get instant access to member-only deals, track your Status Nights, and manage your rewards – all in one place.',
     buttonPosition: 'bottom',
-    buttonText: 'Download the App →',
+    buttonText: 'Discover the card',
   });
 
   const [messages, setMessages] = useState<Message[]>([
