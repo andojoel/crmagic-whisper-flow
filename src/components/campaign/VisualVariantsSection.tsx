@@ -89,7 +89,7 @@ export const VisualVariantsSection = ({
     heatmapPoints: generateMockHeatmapPoints(1),
     performance: {
       ctr: 3.2,
-      conversionRate: 2.1,
+      conversionRate: 6.0,
       revenue: 15420.5,
       targets: {
         ctr: 8.0,
@@ -104,7 +104,7 @@ export const VisualVariantsSection = ({
     heatmapPoints: generateMockHeatmapPoints(2),
     performance: {
       ctr: 3.8,
-      conversionRate: 2.6,
+      conversionRate: 6.0,
       revenue: 18230.75,
       targets: {
         ctr: 8.0,
