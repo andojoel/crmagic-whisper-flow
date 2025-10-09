@@ -13,7 +13,7 @@ import { TypewriterText } from '@/components/chat/TypewriterText';
 import { mockCampaigns } from '@/lib/mock-data';
 import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import campaignCurrentImage from '@/assets/campaign-current.png';
+import campaignCurrentImage from '@/assets/campaign-original.png';
 import phoneContainerImage from '@/assets/phone-container.png';
 
 const presetPrompts = [
@@ -45,7 +45,7 @@ export default function CampaignImprove() {
     image: campaignCurrentImage,
     title: 'Keep your status with the ALL PLUS ibis+ or Voyageur card',
     description: 'Subscribe now and receive 10 bonus Status Nights – that\'s a real boost to help you reach your goal. Plus, enjoy 20% off stays at selected brands until January 14.',
-    buttonPosition: 'center',
+    buttonPosition: 'top',
     buttonText: 'Discover the card',
   });
 
@@ -216,21 +216,8 @@ export default function CampaignImprove() {
                   <ScrollArea className="h-[calc(100vh-20rem)]">
                     <div className="space-y-4 p-4">
                       {/* Preview */}
-                      <div className="relative aspect-video bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
-                        <img src={currentVersion.image} alt="Campaign" className="w-full h-full object-cover" />
-                        <div className={`absolute inset-0 flex flex-col ${
-                          currentVersion.buttonPosition === 'top' ? 'justify-start pt-8' :
-                          currentVersion.buttonPosition === 'bottom' ? 'justify-end pb-8' :
-                          'justify-center'
-                        } items-center p-6 bg-gradient-to-t from-black/60 to-transparent`}>
-                          <div className="text-center space-y-4 max-w-md">
-                            <h3 className="text-white font-heading font-bold text-2xl">{currentVersion.title}</h3>
-                            <p className="text-white/90 text-sm">{currentVersion.description}</p>
-                            <Button className="bg-white text-primary hover:bg-white/90">
-                              {currentVersion.buttonText}
-                            </Button>
-                          </div>
-                        </div>
+                      <div className="relative bg-white rounded-lg border border-border-subtle overflow-hidden">
+                        <img src={currentVersion.image} alt="Campaign" className="w-full h-auto object-contain" />
                       </div>
 
                       {/* Current metrics */}
