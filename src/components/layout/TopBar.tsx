@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import { Bell, Settings, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -11,10 +12,22 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export function TopBar() {
+  const location = useLocation();
+  
+  const getPageTitle = () => {
+    const path = location.pathname;
+    
+    if (path === '/') return 'Dashboard';
+    if (path.startsWith('/campaign/') && path.endsWith('/improve')) return 'Improve Campaign';
+    if (path.startsWith('/campaign/')) return 'Campaign Detail';
+    
+    return 'CRMAGIC';
+  };
+
   return (
     <header className="sticky top-0 z-10 bg-card border-b border-border-subtle px-6 py-3 flex items-center justify-between shadow-sm">
       <div className="flex items-center gap-4">
-        <h1 className="text-xl font-heading font-semibold">CRMAGIC</h1>
+        <h1 className="text-xl font-heading font-semibold">{getPageTitle()}</h1>
       </div>
 
       <div className="flex items-center gap-2">
