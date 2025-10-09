@@ -258,7 +258,22 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
       const roundedMax = Math.ceil(maxRevenue / 5000) * 5000;
       return [0, roundedMax];
     }
-    return [0, 100];
+    
+    // For CTR and CR, calculate dynamic domain based on actual data
+    const values = monthlyData.flatMap(d => {
+      const versionAValue = getMetricValue(d, 'A');
+      const versionBValue = getMetricValue(d, 'B');
+      return [versionAValue, versionBValue];
+    });
+    
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
+    
+    // Add 20% padding above max value for visual clarity
+    const paddedMax = Math.ceil((maxValue * 1.2) * 2) / 2; // Round to nearest 0.5
+    const paddedMin = Math.max(0, Math.floor((minValue * 0.8) * 2) / 2);
+    
+    return [paddedMin, paddedMax];
   };
 
   const getYAxisTicks = () => {
@@ -267,7 +282,18 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
       const step = max / 5;
       return Array.from({ length: 6 }, (_, i) => i * step);
     }
-    return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    
+    // For CTR and CR, generate 6-8 ticks across the domain
+    const [min, max] = getYAxisDomain();
+    const range = max - min;
+    const step = Math.ceil((range / 6) * 2) / 2; // Round to nearest 0.5
+    
+    const ticks = [];
+    for (let i = min; i <= max; i += step) {
+      ticks.push(Number(i.toFixed(1)));
+    }
+    
+    return ticks;
   };
 
   const formatYAxis = (value: number) => {
@@ -281,7 +307,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
         compactDisplay: 'short'
       }).format(value);
     }
-    return `${value}%`;
+    return `${value.toFixed(1)}%`;
   };
 
   const chartDataWithMetric = useMemo(() => {
