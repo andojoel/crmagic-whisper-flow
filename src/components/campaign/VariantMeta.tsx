@@ -91,7 +91,7 @@ export const VariantMeta = ({
               </Button>
             )}
           </div>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-2 gap-4 mb-4">
             {/* CTR Card */}
             <Card className={
               performance.targets
@@ -173,8 +173,10 @@ export const VariantMeta = ({
                 </div>
               </CardContent>
             </Card>
+          </div>
 
-            {/* Revenue Card */}
+          {/* Revenue Card - Full Width */}
+          <div className="grid grid-cols-1 gap-4">
             <Card className={
               performance.targets
                 ? getMetricStatus(performance.revenue, performance.targets.revenue) === "success"
