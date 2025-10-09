@@ -29,7 +29,7 @@ export interface Campaign {
 export const mockCampaigns: Campaign[] = [
   {
     id: '1',
-    title: 'Back-to-School 2025',
+    title: 'All Accor+ card',
     startDate: '01 Sep',
     endDate: '30 Sep',
     owner: 'Alice Martin',
