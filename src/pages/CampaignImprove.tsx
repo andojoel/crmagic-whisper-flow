@@ -60,22 +60,23 @@ export default function CampaignImprove() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: `J'ai analysé votre variant. Voici mes recommandations pour améliorer les performances :
+      content: `I have analysed your variant. Here are my recommendations for improving performance:
 
-📊 **CTR actuel : ${campaign.clickThroughRate}%** - Légèrement sous la cible de 5%
-• Optimisez le titre avec un appel à l'action plus fort
-• Testez un placement du bouton CTA plus visible
+📊 **Current CTR: 4.2%** - Slightly below the target of 5%
+• Optimise the title with a stronger call to action. I suggest: "🎁 Keep your status with ALL Accor+ Card."
 
-💰 **CR actuel : ${campaign.conversionRate}%** - Au-dessus de la cible de 5%
-• Excellent ! Conservez cette structure
-• Envisagez d'augmenter la cible à 7%
+• Test a more visible placement for the CTA button and change the wording. My recommendation: "Discover the Card"
 
-🎯 **Actions prioritaires :**
-1. Renforcer l'urgence dans le titre
-2. Améliorer le contraste du bouton principal
-3. Simplifier le parcours utilisateur
+💰 **Current CR: 2.4%** - Above the target of 5%
+• Excellent! Keep this structure
+• Consider increasing the target to 7%
 
-Que souhaitez-vous optimiser en premier ?`,
+I also replaced the visual with another one available in the library
+
+🎯 **Priority actions:**
+1. Reinforce the urgency in the title
+2. Improve the contrast of the main button
+3. Test another visual`,
     },
   ]);
   const [input, setInput] = useState('');
