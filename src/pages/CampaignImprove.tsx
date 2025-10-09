@@ -15,7 +15,6 @@ import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import campaignCurrentImage from '@/assets/campaign-current.png';
 import campaignSuggestedImage from '@/assets/campaign-suggested.png';
-import phoneContainerImage from '@/assets/phone-container.png';
 
 const presetPrompts = [
   'Optimize subject line',
@@ -51,11 +50,11 @@ export default function CampaignImprove() {
   });
 
   const [suggestedVersion, setSuggestedVersion] = useState<CampaignVersion>({
-    image: phoneContainerImage,
-    title: 'Keep your status with the ALL PLUS ibis+ or Voyageur card',
-    description: 'Subscribe now and receive 10 bonus Status Nights – that\'s a real boost to help you reach your goal. Plus, enjoy 20% off your stays at selected brands until January 14.',
+    image: campaignSuggestedImage,
+    title: '🔥 Last Chance: Keep your Gold status with exclusive bonuses!',
+    description: 'Act now! Get 10 bonus Status Nights PLUS 20% off stays. This limited offer helps you maintain your elite status effortlessly. Don\'t let your benefits expire!',
     buttonPosition: 'bottom',
-    buttonText: 'Discover the card',
+    buttonText: 'Claim My Bonuses Now →',
   });
 
   const [messages, setMessages] = useState<Message[]>([
@@ -259,30 +258,20 @@ Que souhaitez-vous optimiser en premier ?`,
                 <TabsContent value="suggested" className="mt-0">
                   <ScrollArea className="h-[calc(100vh-20rem)]">
                     <div className="space-y-4 p-4">
-                      {/* Preview with side-by-side layout */}
-                      <div className="bg-white rounded-lg border border-border-subtle overflow-hidden p-8">
-                        <div className="grid grid-cols-2 gap-8 items-center">
-                          <div className="space-y-6">
-                            <h3 className="text-foreground font-heading font-bold text-3xl leading-tight">
-                              {suggestedVersion.title}
-                            </h3>
-                            <p className="text-muted-foreground text-base leading-relaxed">
-                              {suggestedVersion.description}
-                            </p>
-                            <Button 
-                              variant="outline" 
-                              size="lg"
-                              className="rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                            >
+                      {/* Preview */}
+                      <div className="relative aspect-video bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
+                        <img src={suggestedVersion.image} alt="Campaign" className="w-full h-full object-cover" />
+                        <div className={`absolute inset-0 flex flex-col ${
+                          suggestedVersion.buttonPosition === 'top' ? 'justify-start pt-8' :
+                          suggestedVersion.buttonPosition === 'bottom' ? 'justify-end pb-8' :
+                          'justify-center'
+                        } items-center p-6 bg-gradient-to-t from-black/60 to-transparent`}>
+                          <div className="text-center space-y-4 max-w-md">
+                            <h3 className="text-white font-heading font-bold text-2xl">{suggestedVersion.title}</h3>
+                            <p className="text-white/90 text-sm">{suggestedVersion.description}</p>
+                            <Button className="bg-white text-primary hover:bg-white/90">
                               {suggestedVersion.buttonText}
                             </Button>
-                          </div>
-                          <div className="flex items-center justify-center">
-                            <img 
-                              src={suggestedVersion.image} 
-                              alt="Campaign visual" 
-                              className="w-full h-auto object-contain"
-                            />
                           </div>
                         </div>
                       </div>
