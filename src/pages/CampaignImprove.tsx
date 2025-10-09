@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/button';
@@ -8,45 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockCampaigns } from '@/lib/mock-data';
 import { ArrowLeft, Send, Sparkles } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { VariantPreviewWithHeatmap } from '@/components/campaign/VariantPreviewWithHeatmap';
-import { VariantMeta } from '@/components/campaign/VariantMeta';
-import variantA from '@/assets/variant-a.png';
-import variantB from '@/assets/variant-b.png';
 
-// Mock function to generate realistic heatmap data
-const generateMockHeatmapPoints = (seed: number) => {
-  const points = [];
-  const numClusters = 3 + Math.floor(Math.random() * 3);
-
-  for (let cluster = 0; cluster < numClusters; cluster++) {
-    const centerX = 200 + Math.random() * 800;
-    const centerY = 100 + Math.random() * 400;
-    const clusterSize = 15 + Math.floor(Math.random() * 20);
-    const baseIntensity = 0.4 + Math.random() * 0.6;
-
-    for (let i = 0; i < clusterSize; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const distance = Math.random() * 80;
-      const x = centerX + Math.cos(angle) * distance;
-      const y = centerY + Math.sin(angle) * distance;
-      const intensity = Math.max(
-        0.1,
-        baseIntensity - (distance / 80) * 0.3 + (Math.random() - 0.5) * 0.2
-      );
-      const clicks = Math.floor(50 + intensity * 200);
-
-      points.push({
-        x: Math.max(50, Math.min(1150, x)),
-        y: Math.max(50, Math.min(578, y)),
-        intensity: Math.min(1, intensity),
-        clicks,
-        element: cluster === 0 ? "CTA Button" : cluster === 1 ? "Card Image" : undefined,
-      });
-    }
-  }
-
-  return points;
-};
+const presetPrompts = [
+  'Optimize subject line',
+  'Change image',
+  'Adapt to VIP segment',
+  'Target CR ≥ 3%',
+];
 
 interface Message {
   role: 'user' | 'assistant';
@@ -57,37 +25,14 @@ export default function CampaignImprove() {
   const { id } = useParams();
   const navigate = useNavigate();
   const campaign = mockCampaigns.find((c) => c.id === id);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: 'assistant',
+      content: "Hi! I'm your AI co-pilot. I can help optimize your campaign. What would you like to improve?",
+    },
+  ]);
   const [input, setInput] = useState('');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-
-  // Mock variant data
-  const variantData = {
-    imageUrl: variantA,
-    heatmapPoints: generateMockHeatmapPoints(1),
-    performance: {
-      ctr: 3.2,
-      conversionRate: 6.0,
-      revenue: 15420.5,
-      targets: {
-        ctr: 8.0,
-        conversionRate: 5.0,
-        revenue: 25000,
-      },
-    },
-  };
-
-  // Initialize with proactive AI suggestions
-  useEffect(() => {
-    setTimeout(() => {
-      setMessages([
-        {
-          role: 'assistant',
-          content: "I've analyzed your campaign performance. Here are key areas for improvement:\n\n1. **CTR is 3.2% vs target 8.0%** - Your click-through rate is significantly below target. Consider:\n   • Testing a more compelling headline\n   • Improving visual hierarchy\n   • Adding urgency indicators\n\n2. **Conversion Rate: Great job! 6.0% exceeds your 5.0% target** ✓\n\n3. **Revenue at $15,420 vs target $25,000** - Consider:\n   • Upselling strategies\n   • Bundle offers\n   • Targeting higher-value segments\n\nWhat would you like to tackle first?",
-        },
-      ]);
-    }, 500);
-  }, []);
 
   if (!campaign) {
     return (
@@ -118,6 +63,9 @@ export default function CampaignImprove() {
     }, 1000);
   };
 
+  const handlePresetClick = (prompt: string) => {
+    setInput(prompt);
+  };
 
   return (
     <AppShell>
@@ -172,7 +120,20 @@ export default function CampaignImprove() {
               </div>
             </ScrollArea>
 
-            <div className="p-4 border-t border-border-subtle">
+            <div className="p-4 border-t border-border-subtle space-y-3">
+              <div className="flex flex-wrap gap-2">
+                {presetPrompts.map((prompt) => (
+                  <Button
+                    key={prompt}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handlePresetClick(prompt)}
+                    className="text-xs"
+                  >
+                    {prompt}
+                  </Button>
+                ))}
+              </div>
               <div className="flex gap-2">
                 <Input
                   placeholder="Type your message..."
@@ -200,20 +161,31 @@ export default function CampaignImprove() {
             </div>
 
             <ScrollArea className="flex-1 p-6">
-              <div className="space-y-6">
-                <VariantPreviewWithHeatmap
-                  imageUrl={variantData.imageUrl}
-                  heatmapPoints={variantData.heatmapPoints}
-                  imageWidth={1200}
-                  imageHeight={628}
-                />
-                <VariantMeta
-                  environment="Web"
-                  campaignType="Banner"
-                  startDate={campaign.startDate}
-                  endDate={campaign.endDate}
-                  performance={variantData.performance}
-                />
+              <div className="space-y-4">
+                <div className="aspect-video bg-muted/20 rounded-lg border border-border-subtle flex items-center justify-center">
+                  <p className="text-sm text-muted-foreground">Campaign Preview</p>
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="font-heading font-semibold mb-2">{campaign.title}</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Preview of campaign creative with all optimizations applied in real-time.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-muted/30 rounded-lg border border-border-subtle">
+                    <p className="text-xs text-muted-foreground mb-2">Current metrics</p>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-muted-foreground">CR</p>
+                        <p className="font-medium">{campaign.conversionRate}%</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">CTR</p>
+                        <p className="font-medium">{campaign.clickThroughRate}%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </ScrollArea>
 

@@ -40,7 +40,7 @@ export function Sidebar() {
         </Button>
       </div>
 
-      <nav className="flex-1 p-2 overflow-y-auto sticky top-0">
+      <nav className="flex-1 p-2">
         <TooltipProvider>
           <ul className="space-y-1">
             {navItems.map((item) => {
