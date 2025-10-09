@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { format, startOfYear, endOfDay } from 'date-fns';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { cn } from '@/lib/utils';
 
 interface MetricData {
@@ -146,8 +146,10 @@ const processToDaily = (data: MetricData[]): DailyData[] => {
 };
 
 export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrComparisonChartProps) {
-  const [dateFrom, setDateFrom] = useState<Date>(defaultFrom || startOfYear(new Date()));
-  const [dateTo, setDateTo] = useState<Date>(defaultTo || endOfDay(new Date()));
+  // Default to September of current year
+  const septemberDate = new Date(new Date().getFullYear(), 8, 1); // Month 8 = September
+  const [dateFrom, setDateFrom] = useState<Date>(defaultFrom || startOfMonth(septemberDate));
+  const [dateTo, setDateTo] = useState<Date>(defaultTo || endOfMonth(septemberDate));
   const [isLoading] = useState(false);
   const [visibleVersions, setVisibleVersions] = useState({ A: true, B: true });
   const [selectedMetric, setSelectedMetric] = useState<MetricType>('ctr');
@@ -344,8 +346,9 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
             <Button
               variant="outline"
               onClick={() => {
-                setDateFrom(startOfYear(new Date()));
-                setDateTo(endOfDay(new Date()));
+                const septemberDate = new Date(new Date().getFullYear(), 8, 1);
+                setDateFrom(startOfMonth(septemberDate));
+                setDateTo(endOfMonth(septemberDate));
               }}
             >
               Reset filter
