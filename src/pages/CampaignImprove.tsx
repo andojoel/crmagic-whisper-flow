@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { mockCampaigns } from '@/lib/mock-data';
 import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -128,11 +129,12 @@ Que souhaitez-vous optimiser en premier ?`,
           )}
         </div>
 
-        {/* Two-pane layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-12rem)]">
+        {/* Resizable two-pane layout */}
+        <ResizablePanelGroup direction="horizontal" className="h-[calc(100vh-12rem)] rounded-lg border border-border-subtle">
           {/* Left: AI Chat */}
-          <div className="bg-card rounded-lg border border-border-subtle shadow-card flex flex-col">
-            <div className="p-4 border-b border-border-subtle">
+          <ResizablePanel defaultSize={33} minSize={20} maxSize={50}>
+            <div className="bg-card h-full flex flex-col">
+              <div className="p-4 border-b border-border-subtle">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
                   <Sparkles className="h-4 w-4 text-accent" />
@@ -191,12 +193,16 @@ Que souhaitez-vous optimiser en premier ?`,
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
+              </div>
             </div>
-          </div>
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
 
           {/* Right: Live Preview */}
-          <div className="bg-card rounded-lg border border-border-subtle shadow-card flex flex-col">
-            <div className="p-4 border-b border-border-subtle">
+          <ResizablePanel defaultSize={67} minSize={50}>
+            <div className="bg-card h-full flex flex-col">
+              <div className="p-4 border-b border-border-subtle">
               <Tabs defaultValue="current" className="w-full">
                 <TabsList className="w-full">
                   <TabsTrigger value="current" className="flex-1">Current version</TabsTrigger>
@@ -398,7 +404,8 @@ Que souhaitez-vous optimiser en premier ?`,
               <Button size="sm">Apply changes</Button>
             </div>
           </div>
-        </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
       </div>
     </AppShell>
   );
