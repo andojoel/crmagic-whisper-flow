@@ -204,147 +204,155 @@ export default function CampaignImprove() {
 
           {/* Right: Live Preview */}
           <ResizablePanel defaultSize={67} minSize={50}>
-            <div className="bg-card h-full flex flex-col">
-              <div className="p-4 border-b border-border-subtle">
-              <Tabs defaultValue="current" className="w-full">
-                <TabsList className="w-full">
-                  <TabsTrigger value="current" className="flex-1">Current version</TabsTrigger>
-                  <TabsTrigger value="suggested" className="flex-1">Suggested version</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="current" className="mt-0">
-                  <ScrollArea className="h-[calc(100vh-20rem)]">
-                    <div className="space-y-4 p-4">
-                      {/* Preview */}
-                      <div className="relative bg-white rounded-lg border border-border-subtle overflow-hidden">
-                        <img src={currentVersion.image} alt="Campaign" className="w-full h-auto object-contain" />
-                      </div>
-
-                      {/* Current metrics */}
-                      <div className="p-4 bg-muted/30 rounded-lg border border-border-subtle">
-                        <p className="text-xs text-muted-foreground mb-3 font-medium">Current Performance</p>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <p className="text-muted-foreground">Click-Through Rate</p>
-                            <p className="font-medium text-lg">{campaign.clickThroughRate}%</p>
-                            <p className="text-xs text-muted-foreground">Target: 5.0%</p>
-                          </div>
-                          <div>
-                            <p className="text-muted-foreground">Conversion Rate</p>
-                            <p className="font-medium text-lg">{campaign.conversionRate}%</p>
-                            <p className="text-xs text-muted-foreground">Target: 5.0%</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-
-                <TabsContent value="suggested" className="mt-0">
-                  <ScrollArea className="h-[calc(100vh-20rem)]">
-                    <div className="space-y-4 p-4">
-                      {/* Preview - Side by side layout */}
-                      <div className="bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
-                        <div className="grid grid-cols-2 gap-6 p-6">
-                          {/* Left: Text content */}
-                          <div className="flex flex-col justify-center space-y-4">
-                            <h3 className="font-heading font-bold text-2xl">{suggestedVersion.title}</h3>
-                            <p className="text-muted-foreground text-sm">{suggestedVersion.description}</p>
-                            <div>
-                              <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-                                {suggestedVersion.buttonText}
-                              </Button>
-                            </div>
-                          </div>
-                          {/* Right: Image */}
-                          <div className="flex items-center justify-center">
-                            <img src={suggestedVersion.image} alt="Campaign" className="max-w-full h-auto object-contain" />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Edit Form */}
-                      <div className="space-y-4">
-                        <h4 className="font-heading font-semibold text-sm">Edit Suggested Elements</h4>
-                        
-                        <div className="space-y-3">
-                          <div>
-                            <Label htmlFor="suggested-title">Title</Label>
-                            <Input
-                              id="suggested-title"
-                              value={suggestedVersion.title}
-                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, title: e.target.value })}
-                            />
+            <ResizablePanelGroup direction="vertical" className="h-full">
+              <ResizablePanel defaultSize={75} minSize={30}>
+                <div className="bg-card h-full flex flex-col">
+                  <div className="p-4 border-b border-border-subtle">
+                  <Tabs defaultValue="current" className="w-full">
+                    <TabsList className="w-full">
+                      <TabsTrigger value="current" className="flex-1">Current version</TabsTrigger>
+                      <TabsTrigger value="suggested" className="flex-1">Suggested version</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="current" className="mt-0">
+                      <ScrollArea className="h-[calc(100vh-20rem)]">
+                        <div className="space-y-4 p-4">
+                          {/* Preview */}
+                          <div className="relative bg-white rounded-lg border border-border-subtle overflow-hidden">
+                            <img src={currentVersion.image} alt="Campaign" className="w-full h-auto object-contain" />
                           </div>
 
-                          <div>
-                            <Label htmlFor="suggested-description">Description</Label>
-                            <Textarea
-                              id="suggested-description"
-                              value={suggestedVersion.description}
-                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, description: e.target.value })}
-                              rows={3}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="suggested-button-text">Button Text</Label>
-                            <Input
-                              id="suggested-button-text"
-                              value={suggestedVersion.buttonText}
-                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, buttonText: e.target.value })}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="suggested-button-position">Button Position</Label>
-                            <Select 
-                              value={suggestedVersion.buttonPosition} 
-                              onValueChange={(value: 'top' | 'center' | 'bottom') => 
-                                setSuggestedVersion({ ...suggestedVersion, buttonPosition: value })
-                              }
-                            >
-                              <SelectTrigger id="suggested-button-position">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="top">Top</SelectItem>
-                                <SelectItem value="center">Center</SelectItem>
-                                <SelectItem value="bottom">Bottom</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div>
-                            <Label htmlFor="suggested-image">Image URL</Label>
-                            <div className="flex gap-2">
-                              <Input
-                                id="suggested-image"
-                                value={suggestedVersion.image}
-                                onChange={(e) => setSuggestedVersion({ ...suggestedVersion, image: e.target.value })}
-                                placeholder="https://..."
-                              />
-                              <Button variant="outline" size="icon">
-                                <Upload className="h-4 w-4" />
-                              </Button>
+                          {/* Current metrics */}
+                          <div className="p-4 bg-muted/30 rounded-lg border border-border-subtle">
+                            <p className="text-xs text-muted-foreground mb-3 font-medium">Current Performance</p>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <p className="text-muted-foreground">Click-Through Rate</p>
+                                <p className="font-medium text-lg">{campaign.clickThroughRate}%</p>
+                                <p className="text-xs text-muted-foreground">Target: 5.0%</p>
+                              </div>
+                              <div>
+                                <p className="text-muted-foreground">Conversion Rate</p>
+                                <p className="font-medium text-lg">{campaign.conversionRate}%</p>
+                                <p className="text-xs text-muted-foreground">Target: 5.0%</p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-              </Tabs>
-            </div>
+                      </ScrollArea>
+                    </TabsContent>
 
-            <div className="p-4 border-t border-border-subtle flex items-center justify-between gap-3">
-              <Button variant="outline" size="sm">
-                Version history
-              </Button>
-              <Button size="sm">Apply changes</Button>
-            </div>
-          </div>
-        </ResizablePanel>
+                    <TabsContent value="suggested" className="mt-0">
+                      <ScrollArea className="h-[calc(100vh-20rem)]">
+                        <div className="space-y-4 p-4">
+                          {/* Preview - Side by side layout */}
+                          <div className="bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
+                            <div className="grid grid-cols-2 gap-6 p-6">
+                              {/* Left: Text content */}
+                              <div className="flex flex-col justify-center space-y-4">
+                                <h3 className="font-heading font-bold text-2xl">{suggestedVersion.title}</h3>
+                                <p className="text-muted-foreground text-sm">{suggestedVersion.description}</p>
+                                <div>
+                                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
+                                    {suggestedVersion.buttonText}
+                                  </Button>
+                                </div>
+                              </div>
+                              {/* Right: Image */}
+                              <div className="flex items-center justify-center">
+                                <img src={suggestedVersion.image} alt="Campaign" className="max-w-full h-auto object-contain" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Edit Form */}
+                          <div className="space-y-4">
+                            <h4 className="font-heading font-semibold text-sm">Edit Suggested Elements</h4>
+                            
+                            <div className="space-y-3">
+                              <div>
+                                <Label htmlFor="suggested-title">Title</Label>
+                                <Input
+                                  id="suggested-title"
+                                  value={suggestedVersion.title}
+                                  onChange={(e) => setSuggestedVersion({ ...suggestedVersion, title: e.target.value })}
+                                />
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-description">Description</Label>
+                                <Textarea
+                                  id="suggested-description"
+                                  value={suggestedVersion.description}
+                                  onChange={(e) => setSuggestedVersion({ ...suggestedVersion, description: e.target.value })}
+                                  rows={3}
+                                />
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-button-text">Button Text</Label>
+                                <Input
+                                  id="suggested-button-text"
+                                  value={suggestedVersion.buttonText}
+                                  onChange={(e) => setSuggestedVersion({ ...suggestedVersion, buttonText: e.target.value })}
+                                />
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-button-position">Button Position</Label>
+                                <Select 
+                                  value={suggestedVersion.buttonPosition} 
+                                  onValueChange={(value: 'top' | 'center' | 'bottom') => 
+                                    setSuggestedVersion({ ...suggestedVersion, buttonPosition: value })
+                                  }
+                                >
+                                  <SelectTrigger id="suggested-button-position">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="top">Top</SelectItem>
+                                    <SelectItem value="center">Center</SelectItem>
+                                    <SelectItem value="bottom">Bottom</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-image">Image URL</Label>
+                                <div className="flex gap-2">
+                                  <Input
+                                    id="suggested-image"
+                                    value={suggestedVersion.image}
+                                    onChange={(e) => setSuggestedVersion({ ...suggestedVersion, image: e.target.value })}
+                                    placeholder="https://..."
+                                  />
+                                  <Button variant="outline" size="icon">
+                                    <Upload className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ScrollArea>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+                </div>
+              </ResizablePanel>
+
+              <ResizableHandle withHandle />
+
+              <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+                <div className="bg-card h-full p-4 border-t border-border-subtle flex items-center justify-between gap-3">
+                  <Button variant="outline" size="sm">
+                    Version history
+                  </Button>
+                  <Button size="sm">Apply changes</Button>
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
       </ResizablePanelGroup>
       </div>
     </AppShell>
