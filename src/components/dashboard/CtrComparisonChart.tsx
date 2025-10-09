@@ -19,8 +19,8 @@ interface MetricData {
 
 type MetricType = 'ctr' | 'cr' | 'revenue';
 
-interface MonthlyData {
-  month: string;
+interface DailyData {
+  date: string;
   versionA: number;
   versionB: number;
   versionAClicks: number;
@@ -85,9 +85,9 @@ const generateMockData = (from: Date, to: Date): MetricData[] => {
   return data;
 };
 
-// Aggregate daily data to monthly metrics
-const aggregateToMonthly = (data: MetricData[]): MonthlyData[] => {
-  const monthlyMap = new Map<string, {
+// Process daily data
+const processToDaily = (data: MetricData[]): DailyData[] => {
+  const dailyMap = new Map<string, {
     aClicks: number;
     aImpressions: number;
     aConversions: number;
@@ -99,10 +99,10 @@ const aggregateToMonthly = (data: MetricData[]): MonthlyData[] => {
   }>();
   
   data.forEach(item => {
-    const monthKey = item.date.substring(0, 7); // YYYY-MM
+    const dayKey = item.date; // YYYY-MM-DD
     
-    if (!monthlyMap.has(monthKey)) {
-      monthlyMap.set(monthKey, {
+    if (!dailyMap.has(dayKey)) {
+      dailyMap.set(dayKey, {
         aClicks: 0,
         aImpressions: 0,
         aConversions: 0,
@@ -114,23 +114,23 @@ const aggregateToMonthly = (data: MetricData[]): MonthlyData[] => {
       });
     }
     
-    const monthData = monthlyMap.get(monthKey)!;
+    const dayData = dailyMap.get(dayKey)!;
     if (item.version === 'A') {
-      monthData.aClicks += item.clicks;
-      monthData.aImpressions += item.impressions;
-      monthData.aConversions += item.conversions;
-      monthData.aRevenue += item.revenue;
+      dayData.aClicks += item.clicks;
+      dayData.aImpressions += item.impressions;
+      dayData.aConversions += item.conversions;
+      dayData.aRevenue += item.revenue;
     } else {
-      monthData.bClicks += item.clicks;
-      monthData.bImpressions += item.impressions;
-      monthData.bConversions += item.conversions;
-      monthData.bRevenue += item.revenue;
+      dayData.bClicks += item.clicks;
+      dayData.bImpressions += item.impressions;
+      dayData.bConversions += item.conversions;
+      dayData.bRevenue += item.revenue;
     }
   });
   
-  return Array.from(monthlyMap.entries())
-    .map(([month, data]) => ({
-      month: format(new Date(month + '-01'), 'MMM'),
+  return Array.from(dailyMap.entries())
+    .map(([date, data]) => ({
+      date: format(new Date(date), 'MMM d'),
       versionA: data.aImpressions > 0 ? (data.aClicks / data.aImpressions) * 100 : 0,
       versionB: data.bImpressions > 0 ? (data.bClicks / data.bImpressions) * 100 : 0,
       versionAClicks: data.aClicks,
@@ -142,10 +142,7 @@ const aggregateToMonthly = (data: MetricData[]): MonthlyData[] => {
       versionARevenue: data.aRevenue,
       versionBRevenue: data.bRevenue,
     }))
-    .sort((a, b) => {
-      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      return monthNames.indexOf(a.month) - monthNames.indexOf(b.month);
-    });
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 };
 
 export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrComparisonChartProps) {
@@ -155,12 +152,12 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
   const [visibleVersions, setVisibleVersions] = useState({ A: true, B: true });
   const [selectedMetric, setSelectedMetric] = useState<MetricType>('ctr');
 
-  const monthlyData = useMemo(() => {
-    const dailyData = generateMockData(dateFrom, dateTo);
-    return aggregateToMonthly(dailyData);
+  const dailyData = useMemo(() => {
+    const rawData = generateMockData(dateFrom, dateTo);
+    return processToDaily(rawData);
   }, [dateFrom, dateTo]);
 
-  const getMetricValue = (data: MonthlyData, version: 'A' | 'B'): number => {
+  const getMetricValue = (data: DailyData, version: 'A' | 'B'): number => {
     if (selectedMetric === 'ctr') {
       return version === 'A' ? data.versionA : data.versionB;
     } else if (selectedMetric === 'cr') {
@@ -191,7 +188,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
     
     return (
       <div className="bg-card border border-border-subtle shadow-lg rounded-lg p-3 text-sm">
-        <p className="font-semibold mb-2">{data.month}</p>
+        <p className="font-semibold mb-2">{data.date}</p>
         {visibleVersions.A && (
           <div className="mb-2">
             <div className="flex items-center gap-2 mb-1">
@@ -253,14 +250,14 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
   const getYAxisDomain = () => {
     if (selectedMetric === 'revenue') {
       const maxRevenue = Math.max(
-        ...monthlyData.map(d => Math.max(d.versionARevenue, d.versionBRevenue))
+        ...dailyData.map(d => Math.max(d.versionARevenue, d.versionBRevenue))
       );
       const roundedMax = Math.ceil(maxRevenue / 5000) * 5000;
       return [0, roundedMax];
     }
     
     // For CTR and CR, calculate dynamic domain based on actual data
-    const values = monthlyData.flatMap(d => {
+    const values = dailyData.flatMap(d => {
       const versionAValue = getMetricValue(d, 'A');
       const versionBValue = getMetricValue(d, 'B');
       return [versionAValue, versionBValue];
@@ -311,12 +308,12 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
   };
 
   const chartDataWithMetric = useMemo(() => {
-    return monthlyData.map(d => ({
+    return dailyData.map(d => ({
       ...d,
       versionA: getMetricValue(d, 'A'),
       versionB: getMetricValue(d, 'B'),
     }));
-  }, [monthlyData, selectedMetric]);
+  }, [dailyData, selectedMetric]);
 
   if (isLoading) {
     return (
@@ -335,7 +332,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
     );
   }
 
-  if (monthlyData.length === 0) {
+  if (dailyData.length === 0) {
     return (
       <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
         <div className="flex items-center justify-between mb-6">
@@ -440,7 +437,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#EAECEF" vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="date"
               tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
               axisLine={{ stroke: '#EAECEF' }}
               tickLine={false}
