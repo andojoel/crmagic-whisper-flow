@@ -49,32 +49,6 @@ export const VariantMeta = ({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Variant details</h3>
-        <dl className="space-y-3">
-          <div className="flex justify-between py-2 border-b border-border">
-            <dt className="text-sm text-muted-foreground">Environment</dt>
-            <dd className="text-sm font-medium">{environment}</dd>
-          </div>
-          <div className="flex justify-between py-2 border-b border-border">
-            <dt className="text-sm text-muted-foreground">Campaign type</dt>
-            <dd className="text-sm font-medium">{campaignType}</dd>
-          </div>
-          <div className="flex justify-between py-2 border-b border-border">
-            <dt className="text-sm text-muted-foreground">Start date</dt>
-            <dd className="text-sm font-medium">
-              {format(new Date(startDate), "dd MMM yyyy")}
-            </dd>
-          </div>
-          <div className="flex justify-between py-2 border-b border-border">
-            <dt className="text-sm text-muted-foreground">End date</dt>
-            <dd className="text-sm font-medium">
-              {format(new Date(endDate), "dd MMM yyyy")}
-            </dd>
-          </div>
-        </dl>
-      </div>
-
       {performance && (
         <div>
           <div className="flex items-center justify-between mb-4">
@@ -221,6 +195,32 @@ export const VariantMeta = ({
           </div>
         </div>
       )}
+
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Variant details</h3>
+        <dl className="space-y-3">
+          <div className="flex justify-between py-2 border-b border-border">
+            <dt className="text-sm text-muted-foreground">Environment</dt>
+            <dd className="text-sm font-medium">{environment}</dd>
+          </div>
+          <div className="flex justify-between py-2 border-b border-border">
+            <dt className="text-sm text-muted-foreground">Campaign type</dt>
+            <dd className="text-sm font-medium">{campaignType}</dd>
+          </div>
+          <div className="flex justify-between py-2 border-b border-border">
+            <dt className="text-sm text-muted-foreground">Start date</dt>
+            <dd className="text-sm font-medium">
+              {format(new Date(startDate), "dd MMM yyyy")}
+            </dd>
+          </div>
+          <div className="flex justify-between py-2 border-b border-border">
+            <dt className="text-sm text-muted-foreground">End date</dt>
+            <dd className="text-sm font-medium">
+              {format(new Date(endDate), "dd MMM yyyy")}
+            </dd>
+          </div>
+        </dl>
+      </div>
     </div>
   );
 };
