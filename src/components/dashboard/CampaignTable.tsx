@@ -147,18 +147,20 @@ export function CampaignTable({ campaigns }: CampaignTableProps) {
                   />
                 </td>
                 <td className="p-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="gap-2 text-accent hover:text-accent hover:bg-accent/10"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/campaign/${campaign.id}/improve`);
-                    }}
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    <span className="hidden sm:inline">AI Suggestion</span>
-                  </Button>
+                  {campaign.hasAiSuggestion && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2 text-accent hover:text-accent hover:bg-accent/10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/campaign/${campaign.id}/improve`);
+                      }}
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      <span className="hidden sm:inline">AI Suggestion</span>
+                    </Button>
+                  )}
                 </td>
               </tr>
             ))}

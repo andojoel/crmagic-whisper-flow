@@ -11,6 +11,7 @@ export interface Campaign {
   conversionRate: number;
   clickThroughRate: number;
   performance: 'good' | 'average' | 'poor';
+  hasAiSuggestion?: boolean;
   versions: {
     v1: {
       conversionRate: number;
@@ -37,6 +38,7 @@ export const mockCampaigns: Campaign[] = [
     conversionRate: 2.4,
     clickThroughRate: 4.2,
     performance: 'good',
+    hasAiSuggestion: true,
     versions: {
       v1: { conversionRate: 2.6, clickThroughRate: 3.9, revenue: 84500 },
       v2: { conversionRate: 2.1, clickThroughRate: 4.6, revenue: 79200 },
@@ -53,6 +55,7 @@ export const mockCampaigns: Campaign[] = [
     conversionRate: 1.2,
     clickThroughRate: 2.1,
     performance: 'average',
+    hasAiSuggestion: true,
     versions: {
       v1: { conversionRate: 1.3, clickThroughRate: 2.0, revenue: 42000 },
       v2: { conversionRate: 1.1, clickThroughRate: 2.2, revenue: 38500 },
@@ -69,6 +72,7 @@ export const mockCampaigns: Campaign[] = [
     conversionRate: 0.7,
     clickThroughRate: 1.5,
     performance: 'poor',
+    hasAiSuggestion: true,
     versions: {
       v1: { conversionRate: 0.8, clickThroughRate: 1.4, revenue: 18200 },
       v2: { conversionRate: 0.6, clickThroughRate: 1.6, revenue: 15800 },
@@ -85,6 +89,7 @@ export const mockCampaigns: Campaign[] = [
     conversionRate: 3.1,
     clickThroughRate: 5.0,
     performance: 'good',
+    hasAiSuggestion: true,
     versions: {
       v1: { conversionRate: 3.2, clickThroughRate: 4.8, revenue: 92000 },
       v2: { conversionRate: 3.0, clickThroughRate: 5.2, revenue: 88500 },
@@ -101,6 +106,7 @@ export const mockCampaigns: Campaign[] = [
     conversionRate: 2.8,
     clickThroughRate: 4.5,
     performance: 'good',
+    hasAiSuggestion: true,
     versions: {
       v1: { conversionRate: 2.9, clickThroughRate: 4.3, revenue: 76000 },
       v2: { conversionRate: 2.7, clickThroughRate: 4.7, revenue: 73500 },
@@ -117,6 +123,7 @@ export const mockCampaigns: Campaign[] = [
     conversionRate: 1.9,
     clickThroughRate: 3.2,
     performance: 'average',
+    hasAiSuggestion: true,
     versions: {
       v1: { conversionRate: 2.0, clickThroughRate: 3.1, revenue: 54000 },
       v2: { conversionRate: 1.8, clickThroughRate: 3.3, revenue: 51500 },
@@ -133,6 +140,7 @@ export const mockCampaigns: Campaign[] = [
     conversionRate: 4.2,
     clickThroughRate: 6.8,
     performance: 'good',
+    hasAiSuggestion: true,
     versions: {
       v1: { conversionRate: 4.3, clickThroughRate: 6.5, revenue: 128000 },
       v2: { conversionRate: 4.1, clickThroughRate: 7.1, revenue: 124500 },
