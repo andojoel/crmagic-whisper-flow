@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { mockCampaigns } from '@/lib/mock-data';
 import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import campaignCurrentImage from '@/assets/campaign-current.png';
 
 const presetPrompts = [
   'Optimize subject line',
@@ -38,11 +39,11 @@ export default function CampaignImprove() {
   const campaign = mockCampaigns.find((c) => c.id === id);
   
   const [currentVersion, setCurrentVersion] = useState<CampaignVersion>({
-    image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc',
-    title: campaign?.title || 'Summer Sale',
-    description: 'Get up to 50% off on selected items. Limited time offer!',
+    image: campaignCurrentImage,
+    title: 'Keep your status with the ALL PLUS ibis+ or Voyageur card',
+    description: 'Subscribe now and receive 10 bonus Status Nights – that\'s a real boost to help you reach your goal. Plus, enjoy 20% off stays at selected brands until January 14.',
     buttonPosition: 'center',
-    buttonText: 'Shop Now',
+    buttonText: 'Discover the card',
   });
 
   const [suggestedVersion, setSuggestedVersion] = useState<CampaignVersion>({
