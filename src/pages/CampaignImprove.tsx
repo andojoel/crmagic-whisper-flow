@@ -12,6 +12,7 @@ import { mockCampaigns } from '@/lib/mock-data';
 import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import campaignCurrentImage from '@/assets/campaign-current.png';
+import campaignSuggestedImage from '@/assets/campaign-suggested.png';
 
 const presetPrompts = [
   'Optimize subject line',
@@ -47,11 +48,11 @@ export default function CampaignImprove() {
   });
 
   const [suggestedVersion, setSuggestedVersion] = useState<CampaignVersion>({
-    image: 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a',
-    title: '🔥 Flash Sale - 50% OFF Today Only!',
-    description: 'Don\'t miss out! Premium products at half price. Offer ends at midnight.',
+    image: campaignSuggestedImage,
+    title: 'Keep your status with the ALL PLUS ibis+ or Voyageur card',
+    description: 'Subscribe now and receive 10 bonus Status Nights – that\'s a real boost to help you reach your goal. Plus, enjoy 20% off stays at selected brands until January 14.',
     buttonPosition: 'bottom',
-    buttonText: 'Claim Your Discount →',
+    buttonText: 'Discover the card',
   });
 
   const [messages, setMessages] = useState<Message[]>([
