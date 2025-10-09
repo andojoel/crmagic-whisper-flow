@@ -52,7 +52,7 @@ export default function CampaignImprove() {
   const [suggestedVersion, setSuggestedVersion] = useState<CampaignVersion>({
     image: phoneContainerImage,
     title: '🎁 Keep your status with ALL Accor+ Card.',
-    description: 'Download the ALL app now and discover your personalized offers. Get instant access to member-only deals, track your Status Nights, and manage your rewards – all in one place.',
+    description: "Subscribe now and receive 10 bonus Status Nights – that's a real boost to help you reach your goal. Plus, enjoy 20% off your stays at selected brands until January 14.",
     buttonPosition: 'bottom',
     buttonText: 'Discover the card',
   });
