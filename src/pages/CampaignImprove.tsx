@@ -155,7 +155,7 @@ export default function CampaignImprove() {
               <Tabs defaultValue="current" className="w-full">
                 <TabsList>
                   <TabsTrigger value="current">Current version</TabsTrigger>
-                  <TabsTrigger value="ai">AI version</TabsTrigger>
+                  <TabsTrigger value="ai">Suggested version</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
