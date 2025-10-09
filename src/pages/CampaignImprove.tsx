@@ -3,10 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { mockCampaigns } from '@/lib/mock-data';
-import { ArrowLeft, Send, Sparkles } from 'lucide-react';
+import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const presetPrompts = [
@@ -21,10 +24,35 @@ interface Message {
   content: string;
 }
 
+interface CampaignVersion {
+  image: string;
+  title: string;
+  description: string;
+  buttonPosition: 'top' | 'center' | 'bottom';
+  buttonText: string;
+}
+
 export default function CampaignImprove() {
   const { id } = useParams();
   const navigate = useNavigate();
   const campaign = mockCampaigns.find((c) => c.id === id);
+  
+  const [currentVersion, setCurrentVersion] = useState<CampaignVersion>({
+    image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc',
+    title: campaign?.title || 'Summer Sale',
+    description: 'Get up to 50% off on selected items. Limited time offer!',
+    buttonPosition: 'center',
+    buttonText: 'Shop Now',
+  });
+
+  const [suggestedVersion, setSuggestedVersion] = useState<CampaignVersion>({
+    image: 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a',
+    title: '🔥 Flash Sale - 50% OFF Today Only!',
+    description: 'Don\'t miss out! Premium products at half price. Offer ends at midnight.',
+    buttonPosition: 'bottom',
+    buttonText: 'Claim Your Discount →',
+  });
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
@@ -168,52 +196,204 @@ Que souhaitez-vous optimiser en premier ?`,
           <div className="bg-card rounded-lg border border-border-subtle shadow-card flex flex-col">
             <div className="p-4 border-b border-border-subtle">
               <Tabs defaultValue="current" className="w-full">
-                <TabsList>
-                  <TabsTrigger value="current">Current version</TabsTrigger>
-                  <TabsTrigger value="ai">Suggested version</TabsTrigger>
+                <TabsList className="w-full">
+                  <TabsTrigger value="current" className="flex-1">Current version</TabsTrigger>
+                  <TabsTrigger value="suggested" className="flex-1">Suggested version</TabsTrigger>
                 </TabsList>
-              </Tabs>
-            </div>
-
-            <ScrollArea className="flex-1 p-6">
-              <div className="space-y-4">
-                <div className="aspect-video bg-muted/20 rounded-lg border border-border-subtle flex items-center justify-center">
-                  <p className="text-sm text-muted-foreground">Campaign Preview</p>
-                </div>
-                <div className="space-y-3">
-                  <div>
-                    <h4 className="font-heading font-semibold mb-2">{campaign.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Preview of campaign creative with all optimizations applied in real-time.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-muted/30 rounded-lg border border-border-subtle">
-                    <p className="text-xs text-muted-foreground mb-2">Current metrics</p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <p className="text-muted-foreground">CR</p>
-                        <p className="font-medium">{campaign.conversionRate}%</p>
+                
+                <TabsContent value="current" className="mt-0">
+                  <ScrollArea className="h-[calc(100vh-20rem)]">
+                    <div className="space-y-4 p-4">
+                      {/* Preview */}
+                      <div className="relative aspect-video bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
+                        <img src={currentVersion.image} alt="Campaign" className="w-full h-full object-cover" />
+                        <div className={`absolute inset-0 flex flex-col ${
+                          currentVersion.buttonPosition === 'top' ? 'justify-start pt-8' :
+                          currentVersion.buttonPosition === 'bottom' ? 'justify-end pb-8' :
+                          'justify-center'
+                        } items-center p-6 bg-gradient-to-t from-black/60 to-transparent`}>
+                          <div className="text-center space-y-4 max-w-md">
+                            <h3 className="text-white font-heading font-bold text-2xl">{currentVersion.title}</h3>
+                            <p className="text-white/90 text-sm">{currentVersion.description}</p>
+                            <Button className="bg-white text-primary hover:bg-white/90">
+                              {currentVersion.buttonText}
+                            </Button>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-muted-foreground">CTR</p>
-                        <p className="font-medium">{campaign.clickThroughRate}%</p>
+
+                      {/* Edit Form */}
+                      <div className="space-y-4">
+                        <h4 className="font-heading font-semibold text-sm">Edit Campaign Elements</h4>
+                        
+                        <div className="space-y-3">
+                          <div>
+                            <Label htmlFor="current-title">Title</Label>
+                            <Input
+                              id="current-title"
+                              value={currentVersion.title}
+                              onChange={(e) => setCurrentVersion({ ...currentVersion, title: e.target.value })}
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="current-description">Description</Label>
+                            <Textarea
+                              id="current-description"
+                              value={currentVersion.description}
+                              onChange={(e) => setCurrentVersion({ ...currentVersion, description: e.target.value })}
+                              rows={3}
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="current-button-text">Button Text</Label>
+                            <Input
+                              id="current-button-text"
+                              value={currentVersion.buttonText}
+                              onChange={(e) => setCurrentVersion({ ...currentVersion, buttonText: e.target.value })}
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="current-button-position">Button Position</Label>
+                            <Select 
+                              value={currentVersion.buttonPosition} 
+                              onValueChange={(value: 'top' | 'center' | 'bottom') => 
+                                setCurrentVersion({ ...currentVersion, buttonPosition: value })
+                              }
+                            >
+                              <SelectTrigger id="current-button-position">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="top">Top</SelectItem>
+                                <SelectItem value="center">Center</SelectItem>
+                                <SelectItem value="bottom">Bottom</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div>
+                            <Label htmlFor="current-image">Image URL</Label>
+                            <div className="flex gap-2">
+                              <Input
+                                id="current-image"
+                                value={currentVersion.image}
+                                onChange={(e) => setCurrentVersion({ ...currentVersion, image: e.target.value })}
+                                placeholder="https://..."
+                              />
+                              <Button variant="outline" size="icon">
+                                <Upload className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </ScrollArea>
+                  </ScrollArea>
+                </TabsContent>
+
+                <TabsContent value="suggested" className="mt-0">
+                  <ScrollArea className="h-[calc(100vh-20rem)]">
+                    <div className="space-y-4 p-4">
+                      {/* Preview */}
+                      <div className="relative aspect-video bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
+                        <img src={suggestedVersion.image} alt="Campaign" className="w-full h-full object-cover" />
+                        <div className={`absolute inset-0 flex flex-col ${
+                          suggestedVersion.buttonPosition === 'top' ? 'justify-start pt-8' :
+                          suggestedVersion.buttonPosition === 'bottom' ? 'justify-end pb-8' :
+                          'justify-center'
+                        } items-center p-6 bg-gradient-to-t from-black/60 to-transparent`}>
+                          <div className="text-center space-y-4 max-w-md">
+                            <h3 className="text-white font-heading font-bold text-2xl">{suggestedVersion.title}</h3>
+                            <p className="text-white/90 text-sm">{suggestedVersion.description}</p>
+                            <Button className="bg-white text-primary hover:bg-white/90">
+                              {suggestedVersion.buttonText}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Edit Form */}
+                      <div className="space-y-4">
+                        <h4 className="font-heading font-semibold text-sm">Edit Suggested Elements</h4>
+                        
+                        <div className="space-y-3">
+                          <div>
+                            <Label htmlFor="suggested-title">Title</Label>
+                            <Input
+                              id="suggested-title"
+                              value={suggestedVersion.title}
+                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, title: e.target.value })}
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="suggested-description">Description</Label>
+                            <Textarea
+                              id="suggested-description"
+                              value={suggestedVersion.description}
+                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, description: e.target.value })}
+                              rows={3}
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="suggested-button-text">Button Text</Label>
+                            <Input
+                              id="suggested-button-text"
+                              value={suggestedVersion.buttonText}
+                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, buttonText: e.target.value })}
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="suggested-button-position">Button Position</Label>
+                            <Select 
+                              value={suggestedVersion.buttonPosition} 
+                              onValueChange={(value: 'top' | 'center' | 'bottom') => 
+                                setSuggestedVersion({ ...suggestedVersion, buttonPosition: value })
+                              }
+                            >
+                              <SelectTrigger id="suggested-button-position">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="top">Top</SelectItem>
+                                <SelectItem value="center">Center</SelectItem>
+                                <SelectItem value="bottom">Bottom</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div>
+                            <Label htmlFor="suggested-image">Image URL</Label>
+                            <div className="flex gap-2">
+                              <Input
+                                id="suggested-image"
+                                value={suggestedVersion.image}
+                                onChange={(e) => setSuggestedVersion({ ...suggestedVersion, image: e.target.value })}
+                                placeholder="https://..."
+                              />
+                              <Button variant="outline" size="icon">
+                                <Upload className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
+              </Tabs>
+            </div>
 
             <div className="p-4 border-t border-border-subtle flex items-center justify-between gap-3">
               <Button variant="outline" size="sm">
                 Version history
               </Button>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  Compare with current
-                </Button>
-                <Button size="sm">Test in production</Button>
-              </div>
+              <Button size="sm">Apply changes</Button>
             </div>
           </div>
         </div>
