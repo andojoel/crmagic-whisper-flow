@@ -121,6 +121,7 @@ export const VariantMeta = ({
                     <>
                       <Progress 
                         value={getProgressPercentage(performance.ctr, performance.targets.ctr)}
+                        variant={getMetricStatus(performance.ctr, performance.targets.ctr) === "success" ? "success" : "destructive"}
                         className="h-2.5"
                       />
                       <p className="text-xs text-muted-foreground font-medium">
@@ -161,6 +162,7 @@ export const VariantMeta = ({
                     <>
                       <Progress 
                         value={getProgressPercentage(performance.conversionRate, performance.targets.conversionRate)}
+                        variant={getMetricStatus(performance.conversionRate, performance.targets.conversionRate) === "success" ? "success" : "destructive"}
                         className="h-2.5"
                       />
                       <p className="text-xs text-muted-foreground font-medium">
@@ -203,6 +205,7 @@ export const VariantMeta = ({
                     <>
                       <Progress 
                         value={getProgressPercentage(performance.revenue, performance.targets.revenue)}
+                        variant={getMetricStatus(performance.revenue, performance.targets.revenue) === "success" ? "success" : "destructive"}
                         className="h-2.5"
                       />
                       <p className="text-xs text-muted-foreground font-medium">
