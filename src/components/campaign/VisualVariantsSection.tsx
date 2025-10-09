@@ -118,7 +118,7 @@ export const VisualVariantsSection = ({
           </TabsList>
 
           <TabsContent value="A" className="mt-0">
-            <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
+            <div className="space-y-8">
               <VariantPreviewWithHeatmap
                 imageUrl={variantAData.imageUrl}
                 heatmapPoints={variantAData.heatmapPoints}
@@ -137,7 +137,7 @@ export const VisualVariantsSection = ({
           </TabsContent>
 
           <TabsContent value="B" className="mt-0">
-            <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
+            <div className="space-y-8">
               <VariantPreviewWithHeatmap
                 imageUrl={variantBData.imageUrl}
                 heatmapPoints={variantBData.heatmapPoints}
