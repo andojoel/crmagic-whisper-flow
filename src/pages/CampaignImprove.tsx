@@ -54,7 +54,7 @@ export default function CampaignImprove() {
     title: '🎁 Keep your status with ALL Accor+ Card.',
     description: "Subscribe now and receive 10 bonus Status Nights – that's a real boost to help you reach your goal. Plus, enjoy 20% off your stays at selected brands until January 14.",
     buttonPosition: 'bottom',
-    buttonText: 'Discover the card',
+    buttonText: 'I stay Gold',
   });
 
   const [messages, setMessages] = useState<Message[]>([
