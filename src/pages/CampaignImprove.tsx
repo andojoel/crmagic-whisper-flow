@@ -63,20 +63,17 @@ export default function CampaignImprove() {
       content: `I have analysed your variant. Here are my recommendations for improving performance:
 
 📊 **Current CTR: 4.2%** - Slightly below the target of 5%
-• Optimise the title with a stronger call to action. I suggest: "🎁 Keep your status with ALL Accor+ Card."
+• Optimise the title with a stronger call to action. I suggest: "🎁 Keep your status with ALL Accor+ Card. "
 
-• Test a more visible placement for the CTA button and change the wording. My recommendation: "Discover the Card"
+• Test a more visible placement for the CTA button and change the wording. My recommendation: « I Stay Gold »
 
 💰 **Current CR: 2.4%** - Above the target of 5%
 • Excellent! Keep this structure
-• Consider increasing the target to 7%
-
-I also replaced the visual with another one available in the library
+• Consider increasing the target to 7%  I also replaced the visual with another one available in the library
 
 🎯 **Priority actions:**
 1. Reinforce the urgency in the title
-2. Improve the contrast of the main button
-3. Test another visual`,
+2. Improve the contrast of the main button 3. Test another visual`,
     },
   ]);
   const [input, setInput] = useState('');
