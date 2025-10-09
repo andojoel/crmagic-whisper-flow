@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ export default function CampaignDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const campaign = mockCampaigns.find((c) => c.id === id);
+  const [selectedVersion, setSelectedVersion] = useState<'v1' | 'v2'>('v1');
 
   if (!campaign) {
     return (
@@ -26,6 +28,7 @@ export default function CampaignDetail() {
   }
 
   const { v1, v2 } = campaign.versions;
+  const currentVersion = selectedVersion === 'v1' ? v1 : v2;
   const bestCR = v1.conversionRate > v2.conversionRate ? 'V1' : 'V2';
   const bestCTR = v1.clickThroughRate > v2.clickThroughRate ? 'V1' : 'V2';
   const bestRevenue = v1.revenue > v2.revenue ? 'V1' : 'V2';
@@ -41,13 +44,21 @@ export default function CampaignDetail() {
 
         {/* Performance Strip */}
         <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
-          <h2 className="text-2xl font-heading font-semibold mb-6">{campaign.title}</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-heading font-semibold">{campaign.title}</h2>
+            <Tabs value={selectedVersion} onValueChange={(v) => setSelectedVersion(v as 'v1' | 'v2')}>
+              <TabsList>
+                <TabsTrigger value="v1">Version 1</TabsTrigger>
+                <TabsTrigger value="v2">Version 2</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <p className="text-sm text-muted-foreground mb-1">Conversion Rate</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-3xl font-heading font-semibold">{campaign.conversionRate}%</p>
-                <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                <p className="text-3xl font-heading font-semibold">{currentVersion.conversionRate}%</p>
+                <Badge variant="outline" className="bg-success-subtle text-success border-success/20">
                   Best: {bestCR}
                 </Badge>
               </div>
@@ -55,8 +66,8 @@ export default function CampaignDetail() {
             <div>
               <p className="text-sm text-muted-foreground mb-1">Click-through Rate</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-3xl font-heading font-semibold">{campaign.clickThroughRate}%</p>
-                <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                <p className="text-3xl font-heading font-semibold">{currentVersion.clickThroughRate}%</p>
+                <Badge variant="outline" className="bg-success-subtle text-success border-success/20">
                   Best: {bestCTR}
                 </Badge>
               </div>
@@ -65,9 +76,9 @@ export default function CampaignDetail() {
               <p className="text-sm text-muted-foreground mb-1">Revenue</p>
               <div className="flex items-baseline gap-2">
                 <p className="text-3xl font-heading font-semibold">
-                  €{((v1.revenue + v2.revenue) / 2).toLocaleString()}
+                  €{currentVersion.revenue.toLocaleString()}
                 </p>
-                <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                <Badge variant="outline" className="bg-success-subtle text-success border-success/20">
                   Best: {bestRevenue}
                 </Badge>
               </div>
