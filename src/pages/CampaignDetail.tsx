@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockCampaigns } from '@/lib/mock-data';
-import { ArrowLeft, Calendar, Filter } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import { CtrComparisonChart } from '@/components/dashboard/CtrComparisonChart';
 
 export default function CampaignDetail() {
   const { id } = useParams();
@@ -87,23 +88,7 @@ export default function CampaignDetail() {
         </div>
 
         {/* Charts Section */}
-        <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-heading font-semibold">Performance Over Time</h3>
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Calendar className="h-4 w-4" />
-                Last 30 days
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Filter className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          <div className="h-64 flex items-center justify-center bg-muted/20 rounded-lg border border-border-subtle">
-            <p className="text-sm text-muted-foreground">Chart visualization placeholder</p>
-          </div>
-        </div>
+        <CtrComparisonChart campaignId={id || '1'} />
 
         {/* Visual Variants Section */}
         <div>
