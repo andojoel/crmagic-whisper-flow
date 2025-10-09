@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
+import { TypewriterText } from '@/components/chat/TypewriterText';
 import { mockCampaigns } from '@/lib/mock-data';
 import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -160,7 +161,11 @@ Que souhaitez-vous optimiser en premier ?`,
                           : 'bg-muted text-foreground'
                       }`}
                     >
-                      <p className="text-sm">{message.content}</p>
+                      {message.role === 'assistant' ? (
+                        <TypewriterText text={message.content} className="text-sm whitespace-pre-line" />
+                      ) : (
+                        <p className="text-sm">{message.content}</p>
+                      )}
                     </div>
                   </div>
                 ))}
