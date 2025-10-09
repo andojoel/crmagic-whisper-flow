@@ -15,7 +15,7 @@ import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import campaignCurrentImage from '@/assets/campaign-current.png';
 import campaignSuggestedImage from '@/assets/campaign-suggested.png';
-import campaignCardsImage from '@/assets/campaign-cards.png';
+import phoneContainerImage from '@/assets/phone-container.png';
 
 const presetPrompts = [
   'Optimize subject line',
@@ -51,7 +51,7 @@ export default function CampaignImprove() {
   });
 
   const [suggestedVersion, setSuggestedVersion] = useState<CampaignVersion>({
-    image: campaignCardsImage,
+    image: phoneContainerImage,
     title: 'Keep your status with the ALL PLUS ibis+ or Voyageur card',
     description: 'Subscribe now and receive 10 bonus Status Nights – that\'s a real boost to help you reach your goal. Plus, enjoy 20% off your stays at selected brands until January 14.',
     buttonPosition: 'bottom',
