@@ -7,6 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockCampaigns } from '@/lib/mock-data';
 import { ArrowLeft } from 'lucide-react';
 import { CtrComparisonChart } from '@/components/dashboard/CtrComparisonChart';
+import { VisualVariantsSection } from '@/components/campaign/VisualVariantsSection';
+import variantAImage from '@/assets/variant-a.png';
+import variantBImage from '@/assets/variant-b.png';
 
 export default function CampaignDetail() {
   const { id } = useParams();
@@ -91,106 +94,14 @@ export default function CampaignDetail() {
         <CtrComparisonChart campaignId={id || '1'} />
 
         {/* Visual Variants Section */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-heading font-semibold">Visual Variants</h3>
-            <Button variant="outline" size="sm">Compare versions</Button>
-          </div>
-          <Tabs defaultValue="v1" className="w-full">
-            <TabsList className="mb-4">
-              <TabsTrigger value="v1">Version 1</TabsTrigger>
-              <TabsTrigger value="v2">Version 2</TabsTrigger>
-            </TabsList>
-            <TabsContent value="v1">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
-                  <div className="aspect-video bg-muted/20 rounded-lg border border-border-subtle flex items-center justify-center mb-4">
-                    <p className="text-sm text-muted-foreground">Version 1 Preview</p>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Conversion Rate:</span>
-                      <span className="font-medium">{v1.conversionRate}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Click-through Rate:</span>
-                      <span className="font-medium">{v1.clickThroughRate}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Revenue:</span>
-                      <span className="font-medium">€{v1.revenue.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
-                  <h4 className="font-medium mb-4">Campaign Details</h4>
-                  <div className="space-y-3 text-sm">
-                    <div>
-                      <p className="text-muted-foreground mb-1">Audience</p>
-                      <p>Premium customers, 25-45 years</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">Objective</p>
-                      <p>Increase product awareness and drive conversions</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">Format</p>
-                      <p>Email campaign with hero image</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">Last updated</p>
-                      <p>2 days ago</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="v2">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
-                  <div className="aspect-video bg-muted/20 rounded-lg border border-border-subtle flex items-center justify-center mb-4">
-                    <p className="text-sm text-muted-foreground">Version 2 Preview</p>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Conversion Rate:</span>
-                      <span className="font-medium">{v2.conversionRate}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Click-through Rate:</span>
-                      <span className="font-medium">{v2.clickThroughRate}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Revenue:</span>
-                      <span className="font-medium">€{v2.revenue.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
-                  <h4 className="font-medium mb-4">Campaign Details</h4>
-                  <div className="space-y-3 text-sm">
-                    <div>
-                      <p className="text-muted-foreground mb-1">Audience</p>
-                      <p>Premium customers, 25-45 years</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">Objective</p>
-                      <p>Increase product awareness and drive conversions</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">Format</p>
-                      <p>Email campaign with minimalist design</p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">Last updated</p>
-                      <p>1 day ago</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+        <VisualVariantsSection
+          variantAImageUrl={variantAImage}
+          variantBImageUrl={variantBImage}
+          startDate={campaign.startDate}
+          endDate={campaign.endDate}
+          environment="Web"
+          campaignType="Banner"
+        />
 
         {/* Sticky Bottom Bar */}
         <div className="sticky bottom-0 -mx-6 -mb-6 lg:-mx-8 lg:-mb-8 bg-card border-t border-border-subtle p-4 flex items-center justify-between shadow-lg">
