@@ -28,7 +28,22 @@ export default function CampaignImprove() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi! I'm your AI co-pilot. I can help optimize your campaign. What would you like to improve?",
+      content: `J'ai analysé votre variant. Voici mes recommandations pour améliorer les performances :
+
+📊 **CTR actuel : ${campaign.clickThroughRate}%** - Légèrement sous la cible de 5%
+• Optimisez le titre avec un appel à l'action plus fort
+• Testez un placement du bouton CTA plus visible
+
+💰 **CR actuel : ${campaign.conversionRate}%** - Au-dessus de la cible de 5%
+• Excellent ! Conservez cette structure
+• Envisagez d'augmenter la cible à 7%
+
+🎯 **Actions prioritaires :**
+1. Renforcer l'urgence dans le titre
+2. Améliorer le contraste du bouton principal
+3. Simplifier le parcours utilisateur
+
+Que souhaitez-vous optimiser en premier ?`,
     },
   ]);
   const [input, setInput] = useState('');
