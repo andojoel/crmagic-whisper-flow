@@ -1,18 +1,23 @@
 import { useState, useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Calendar, Filter } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { format, startOfYear, endOfDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 
-interface CtrData {
+interface MetricData {
   date: string;
   version: 'A' | 'B';
   clicks: number;
   impressions: number;
+  conversions: number;
+  revenue: number;
 }
+
+type MetricType = 'ctr' | 'cr' | 'revenue';
 
 interface MonthlyData {
   month: string;
@@ -22,6 +27,10 @@ interface MonthlyData {
   versionAImpressions: number;
   versionBClicks: number;
   versionBImpressions: number;
+  versionAConversions: number;
+  versionBConversions: number;
+  versionARevenue: number;
+  versionBRevenue: number;
 }
 
 interface CtrComparisonChartProps {
@@ -30,27 +39,35 @@ interface CtrComparisonChartProps {
   defaultTo?: Date;
 }
 
-// Generate mock daily CTR data
-const generateMockData = (from: Date, to: Date): CtrData[] => {
-  const data: CtrData[] = [];
+// Generate mock daily metric data
+const generateMockData = (from: Date, to: Date): MetricData[] => {
+  const data: MetricData[] = [];
   const current = new Date(from);
   
   while (current <= to) {
-    // Version A baseline 2.2-3.8%
+    // Version A
     const versionABaseCtr = 2.5 + Math.sin(current.getMonth() / 2) * 0.6 + (Math.random() - 0.5) * 0.8;
+    const versionABaseCr = 2.2 + Math.sin(current.getMonth() / 2.2) * 0.5 + (Math.random() - 0.5) * 0.6;
     const versionAImpressions = Math.floor(8000 + Math.random() * 15000);
     const versionAClicks = Math.floor(versionAImpressions * (versionABaseCtr / 100));
+    const versionAConversions = Math.floor(versionAClicks * (versionABaseCr / 100));
+    const versionARevenue = versionAConversions * (60 + Math.random() * 50);
     
-    // Version B baseline 1.8-4.6%
+    // Version B
     const versionBBaseCtr = 3.0 + Math.sin(current.getMonth() / 2.5) * 1.0 + (Math.random() - 0.5) * 1.2;
+    const versionBBaseCr = 2.5 + Math.sin(current.getMonth() / 2.3) * 0.6 + (Math.random() - 0.5) * 0.8;
     const versionBImpressions = Math.floor(7000 + Math.random() * 17000);
     const versionBClicks = Math.floor(versionBImpressions * (versionBBaseCtr / 100));
+    const versionBConversions = Math.floor(versionBClicks * (versionBBaseCr / 100));
+    const versionBRevenue = versionBConversions * (65 + Math.random() * 55);
     
     data.push({
       date: format(current, 'yyyy-MM-dd'),
       version: 'A',
       clicks: versionAClicks,
       impressions: versionAImpressions,
+      conversions: versionAConversions,
+      revenue: versionARevenue,
     });
     
     data.push({
@@ -58,6 +75,8 @@ const generateMockData = (from: Date, to: Date): CtrData[] => {
       version: 'B',
       clicks: versionBClicks,
       impressions: versionBImpressions,
+      conversions: versionBConversions,
+      revenue: versionBRevenue,
     });
     
     current.setDate(current.getDate() + 1);
@@ -66,13 +85,17 @@ const generateMockData = (from: Date, to: Date): CtrData[] => {
   return data;
 };
 
-// Aggregate daily data to monthly weighted CTR
-const aggregateToMonthly = (data: CtrData[]): MonthlyData[] => {
+// Aggregate daily data to monthly metrics
+const aggregateToMonthly = (data: MetricData[]): MonthlyData[] => {
   const monthlyMap = new Map<string, {
     aClicks: number;
     aImpressions: number;
+    aConversions: number;
+    aRevenue: number;
     bClicks: number;
     bImpressions: number;
+    bConversions: number;
+    bRevenue: number;
   }>();
   
   data.forEach(item => {
@@ -82,8 +105,12 @@ const aggregateToMonthly = (data: CtrData[]): MonthlyData[] => {
       monthlyMap.set(monthKey, {
         aClicks: 0,
         aImpressions: 0,
+        aConversions: 0,
+        aRevenue: 0,
         bClicks: 0,
         bImpressions: 0,
+        bConversions: 0,
+        bRevenue: 0,
       });
     }
     
@@ -91,9 +118,13 @@ const aggregateToMonthly = (data: CtrData[]): MonthlyData[] => {
     if (item.version === 'A') {
       monthData.aClicks += item.clicks;
       monthData.aImpressions += item.impressions;
+      monthData.aConversions += item.conversions;
+      monthData.aRevenue += item.revenue;
     } else {
       monthData.bClicks += item.clicks;
       monthData.bImpressions += item.impressions;
+      monthData.bConversions += item.conversions;
+      monthData.bRevenue += item.revenue;
     }
   });
   
@@ -106,6 +137,10 @@ const aggregateToMonthly = (data: CtrData[]): MonthlyData[] => {
       versionAImpressions: data.aImpressions,
       versionBClicks: data.bClicks,
       versionBImpressions: data.bImpressions,
+      versionAConversions: data.aConversions,
+      versionBConversions: data.bConversions,
+      versionARevenue: data.aRevenue,
+      versionBRevenue: data.bRevenue,
     }))
     .sort((a, b) => {
       const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -118,11 +153,36 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
   const [dateTo, setDateTo] = useState<Date>(defaultTo || endOfDay(new Date()));
   const [isLoading] = useState(false);
   const [visibleVersions, setVisibleVersions] = useState({ A: true, B: true });
+  const [selectedMetric, setSelectedMetric] = useState<MetricType>('ctr');
 
   const monthlyData = useMemo(() => {
     const dailyData = generateMockData(dateFrom, dateTo);
     return aggregateToMonthly(dailyData);
   }, [dateFrom, dateTo]);
+
+  const getMetricValue = (data: MonthlyData, version: 'A' | 'B'): number => {
+    if (selectedMetric === 'ctr') {
+      return version === 'A' ? data.versionA : data.versionB;
+    } else if (selectedMetric === 'cr') {
+      const clicks = version === 'A' ? data.versionAClicks : data.versionBClicks;
+      const conversions = version === 'A' ? data.versionAConversions : data.versionBConversions;
+      return clicks > 0 ? (conversions / clicks) * 100 : 0;
+    } else {
+      return version === 'A' ? data.versionARevenue : data.versionBRevenue;
+    }
+  };
+
+  const formatMetricValue = (value: number): string => {
+    if (selectedMetric === 'revenue') {
+      return new Intl.NumberFormat('en-GB', { 
+        style: 'currency', 
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+    return `${value.toFixed(1)}%`;
+  };
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (!active || !payload || payload.length === 0) return null;
@@ -138,9 +198,20 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
               <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#5FD3B3' }} />
               <span className="font-medium">Version A</span>
             </div>
-            <p className="text-muted-foreground ml-5">CTR: {data.versionA.toFixed(1)}%</p>
-            <p className="text-muted-foreground ml-5">Clicks: {data.versionAClicks.toLocaleString()}</p>
-            <p className="text-muted-foreground ml-5">Impressions: {data.versionAImpressions.toLocaleString()}</p>
+            <p className="text-muted-foreground ml-5">
+              {selectedMetric === 'ctr' && `CTR: ${data.versionA.toFixed(1)}%`}
+              {selectedMetric === 'cr' && `CR: ${(data.versionAConversions / data.versionAClicks * 100).toFixed(1)}%`}
+              {selectedMetric === 'revenue' && `Revenue: ${formatMetricValue(data.versionARevenue)}`}
+            </p>
+            {selectedMetric !== 'revenue' && (
+              <>
+                <p className="text-muted-foreground ml-5">Clicks: {data.versionAClicks.toLocaleString()}</p>
+                <p className="text-muted-foreground ml-5">Impressions: {data.versionAImpressions.toLocaleString()}</p>
+                {selectedMetric === 'cr' && (
+                  <p className="text-muted-foreground ml-5">Conversions: {data.versionAConversions.toLocaleString()}</p>
+                )}
+              </>
+            )}
           </div>
         )}
         {visibleVersions.B && (
@@ -149,9 +220,20 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
               <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#6F52FF' }} />
               <span className="font-medium">Version B</span>
             </div>
-            <p className="text-muted-foreground ml-5">CTR: {data.versionB.toFixed(1)}%</p>
-            <p className="text-muted-foreground ml-5">Clicks: {data.versionBClicks.toLocaleString()}</p>
-            <p className="text-muted-foreground ml-5">Impressions: {data.versionBImpressions.toLocaleString()}</p>
+            <p className="text-muted-foreground ml-5">
+              {selectedMetric === 'ctr' && `CTR: ${data.versionB.toFixed(1)}%`}
+              {selectedMetric === 'cr' && `CR: ${(data.versionBConversions / data.versionBClicks * 100).toFixed(1)}%`}
+              {selectedMetric === 'revenue' && `Revenue: ${formatMetricValue(data.versionBRevenue)}`}
+            </p>
+            {selectedMetric !== 'revenue' && (
+              <>
+                <p className="text-muted-foreground ml-5">Clicks: {data.versionBClicks.toLocaleString()}</p>
+                <p className="text-muted-foreground ml-5">Impressions: {data.versionBImpressions.toLocaleString()}</p>
+                {selectedMetric === 'cr' && (
+                  <p className="text-muted-foreground ml-5">Conversions: {data.versionBConversions.toLocaleString()}</p>
+                )}
+              </>
+            )}
           </div>
         )}
       </div>
@@ -162,11 +244,59 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
     setVisibleVersions(prev => ({ ...prev, [version]: !prev[version] }));
   };
 
+  const getMetricTitle = () => {
+    if (selectedMetric === 'ctr') return 'Click-Through Rate';
+    if (selectedMetric === 'cr') return 'Conversion Rate';
+    return 'Revenue';
+  };
+
+  const getYAxisDomain = () => {
+    if (selectedMetric === 'revenue') {
+      const maxRevenue = Math.max(
+        ...monthlyData.map(d => Math.max(d.versionARevenue, d.versionBRevenue))
+      );
+      const roundedMax = Math.ceil(maxRevenue / 5000) * 5000;
+      return [0, roundedMax];
+    }
+    return [0, 100];
+  };
+
+  const getYAxisTicks = () => {
+    if (selectedMetric === 'revenue') {
+      const [, max] = getYAxisDomain();
+      const step = max / 5;
+      return Array.from({ length: 6 }, (_, i) => i * step);
+    }
+    return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+  };
+
+  const formatYAxis = (value: number) => {
+    if (selectedMetric === 'revenue') {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+        notation: 'compact',
+        compactDisplay: 'short'
+      }).format(value);
+    }
+    return `${value}%`;
+  };
+
+  const chartDataWithMetric = useMemo(() => {
+    return monthlyData.map(d => ({
+      ...d,
+      versionA: getMetricValue(d, 'A'),
+      versionB: getMetricValue(d, 'B'),
+    }));
+  }, [monthlyData, selectedMetric]);
+
   if (isLoading) {
     return (
       <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-heading font-semibold">Total CTR – Version A vs Version B</h3>
+          <h3 className="text-lg font-heading font-semibold">Campaign Performance – Version A vs Version B</h3>
         </div>
         <div className="h-64 flex items-center justify-center">
           <div className="space-y-3 w-full">
@@ -183,11 +313,11 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
     return (
       <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-heading font-semibold">Total CTR – Version A vs Version B</h3>
+          <h3 className="text-lg font-heading font-semibold">Campaign Performance – Version A vs Version B</h3>
         </div>
         <div className="h-64 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-muted-foreground mb-4">No CTR data for the selected range.</p>
+            <p className="text-muted-foreground mb-4">No data for the selected range.</p>
             <Button
               variant="outline"
               onClick={() => {
@@ -206,8 +336,17 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
   return (
     <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
       <div className="flex items-start justify-between mb-6 flex-wrap gap-4">
-        <div>
-          <h3 className="text-lg font-heading font-semibold mb-2">Total CTR – Version A vs Version B</h3>
+        <div className="flex-1">
+          <h3 className="text-lg font-heading font-semibold mb-4">Campaign Performance – Version A vs Version B</h3>
+          
+          <Tabs value={selectedMetric} onValueChange={(v) => setSelectedMetric(v as MetricType)}>
+            <TabsList className="mb-4">
+              <TabsTrigger value="cr">Conversion Rate</TabsTrigger>
+              <TabsTrigger value="ctr">Click-Through Rate</TabsTrigger>
+              <TabsTrigger value="revenue">Revenue (€)</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
           <div className="flex items-center gap-4 text-sm">
             <button
               onClick={() => toggleVersion('A')}
@@ -269,7 +408,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={monthlyData}
+            data={chartDataWithMetric}
             margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
             barGap={4}
           >
@@ -281,9 +420,9 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
               tickLine={false}
             />
             <YAxis
-              domain={[0, 10]}
-              ticks={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-              tickFormatter={(value) => `${value}%`}
+              domain={getYAxisDomain()}
+              ticks={getYAxisTicks()}
+              tickFormatter={formatYAxis}
               tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
               axisLine={{ stroke: '#EAECEF' }}
               tickLine={false}
