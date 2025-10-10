@@ -83,8 +83,8 @@ export default function CampaignImprove() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            session_id: "test-123456789",
-            message: messages.at(-1)
+            session_id: "vapeap",
+            message: input.trim()
           })
       };
       const res = await fetch('https://automation.adgr.cloud/webhook/crmagic/chat', requestOptions)
@@ -109,14 +109,16 @@ export default function CampaignImprove() {
           content: responseMessage.message,
         },
       ]);
-      if(responseMessage.blocDetails.title || responseMessage.blocDetails.description || responseMessage.blocDetails.buttonText || responseMessage.blocDetails.buttonPosition || responseMessage.blocDetails.imageUrl)
-      setSuggestedVersion({ 
-        title: responseMessage.blocDetails.title,
-        description: responseMessage.blocDetails.description,
-        buttonText: responseMessage.blocDetails.buttonText,
-        buttonPosition: responseMessage.blocDetails.buttonPosition,
-        image: responseMessage.blocDetails.imageUrl
-       })
+
+      if(responseMessage.blocDetails.title || responseMessage.blocDetails.description || responseMessage.blocDetails.buttonText || responseMessage.blocDetails.buttonPosition || responseMessage.blocDetails.imageUrl) {
+        setSuggestedVersion({ 
+          title: responseMessage.blocDetails.title,
+          description: responseMessage.blocDetails.description,
+          buttonText: responseMessage.blocDetails.buttonText,
+          buttonPosition: responseMessage.blocDetails.buttonPosition,
+          image: responseMessage.blocDetails.imageUrl
+        })
+      }
     }, 300);
   };
 
@@ -363,7 +365,7 @@ export default function CampaignImprove() {
               <Button variant="outline" size="sm">
                 Version history
               </Button>
-              <Button size="sm">Apply changes</Button>
+              <a href='https://all.accor.com/a/fr.html?preview=17'><Button size="sm">Apply changes</Button></a>
             </div>
           </div>
         </ResizablePanel>
