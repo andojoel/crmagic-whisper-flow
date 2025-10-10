@@ -7,7 +7,7 @@ interface TypewriterTextProps {
   className?: string;
 }
 
-export function TypewriterText({ text, delay = 1500, speed = 30, className }: TypewriterTextProps) {
+export function TypewriterText({ text, delay = 400, speed = 40, className }: TypewriterTextProps) {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
