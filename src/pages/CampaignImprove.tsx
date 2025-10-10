@@ -365,7 +365,7 @@ export default function CampaignImprove() {
               <Button variant="outline" size="sm">
                 Version history
               </Button>
-              <a href='https://all.accor.com/a/fr.html?preview=17'><Button size="sm">Apply changes</Button></a>
+              <a href='https://all.accor.com/a/fr.html?preview=17' target='_blank'><Button size="sm">Apply changes</Button></a>
             </div>
           </div>
         </ResizablePanel>
