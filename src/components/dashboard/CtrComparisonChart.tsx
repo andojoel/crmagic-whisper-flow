@@ -195,7 +195,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
           <div className="mb-2">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#5FD3B3' }} />
-              <span className="font-medium">Version 1</span>
+              <span className="font-medium">Version A</span>
             </div>
             <p className="text-muted-foreground ml-5">
               {selectedMetric === 'ctr' && `CTR: ${data.versionA.toFixed(1)}%`}
@@ -321,7 +321,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
     return (
       <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-heading font-semibold">Campaign Performance – Version 1 vs Version 2</h3>
+          <h3 className="text-lg font-heading font-semibold">Campaign Performance – Version A vs Version B</h3>
         </div>
         <div className="h-64 flex items-center justify-center">
           <div className="space-y-3 w-full">
@@ -338,7 +338,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
     return (
       <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-heading font-semibold">Campaign Performance – Version 1 vs Version 2</h3>
+          <h3 className="text-lg font-heading font-semibold">Campaign Performance – Version A vs Version B</h3>
         </div>
         <div className="h-64 flex items-center justify-center">
           <div className="text-center">
@@ -363,7 +363,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
     <div className="bg-card rounded-lg border border-border-subtle shadow-card p-6">
       <div className="flex items-start justify-between mb-6 flex-wrap gap-4">
         <div className="flex-1">
-          <h3 className="text-lg font-heading font-semibold mb-4">Campaign Performance – Version 1 vs Version 2</h3>
+          <h3 className="text-lg font-heading font-semibold mb-4">Campaign Performance – Version A vs Version B</h3>
           
           <Tabs value={selectedMetric} onValueChange={(v) => setSelectedMetric(v as MetricType)}>
             <TabsList className="mb-4">
@@ -382,7 +382,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
               )}
             >
               <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#5FD3B3' }} />
-              <span>Version 1</span>
+              <span>Version A</span>
             </button>
             <button
               onClick={() => toggleVersion('B')}
@@ -392,7 +392,7 @@ export function CtrComparisonChart({ campaignId, defaultFrom, defaultTo }: CtrCo
               )}
             >
               <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#6F52FF' }} />
-              <span>Version 2</span>
+              <span>Version B</span>
             </button>
           </div>
         </div>

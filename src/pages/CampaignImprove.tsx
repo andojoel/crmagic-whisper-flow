@@ -15,7 +15,6 @@ import { ArrowLeft, Send, Sparkles, Upload } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import campaignCurrentImage from '@/assets/campaign-original.png';
 import phoneContainerImage from '@/assets/phone-container.png';
-import './ImprovedBlocStyle.css';
 
 const presetPrompts = [
   'Optimize subject line',
@@ -58,7 +57,25 @@ export default function CampaignImprove() {
     buttonText: 'I stay Gold',
   });
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: 'assistant',
+      content: `I have analysed your variant. Here are my recommendations for improving performance:
+
+📊 **Current CTR: 4.2%** - Slightly below the target of 5%
+• Optimise the title with a stronger call to action. I suggest: "🎁 Keep your status with ALL Accor+ Card. "
+
+• Test a more visible placement for the CTA button and change the wording. My recommendation: « I Stay Gold »
+
+💰 **Current CR: 2.4%** - Above the target of 5%
+• Excellent! Keep this structure
+• Consider increasing the target to 7%  I also replaced the visual with another one available in the library
+
+🎯 **Priority actions:**
+1. Reinforce the urgency in the title
+2. Improve the contrast of the main button 3. Test another visual`,
+    },
+  ]);
   const [input, setInput] = useState('');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
@@ -72,33 +89,12 @@ export default function CampaignImprove() {
     );
   }
 
-  const handleSend = async() => {
+  const handleSend = () => {
     if (!input.trim()) return;
     
     setMessages([...messages, { role: 'user', content: input }]);
     setInput('');
     setHasUnsavedChanges(true);
-
-     const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            session_id: "vapeap",
-            message: input.trim()
-          })
-      };
-      const res = await fetch('https://automation.adgr.cloud/webhook/crmagic/chat', requestOptions)
-
-      const responseMessage: {
-          message: string,
-          blocDetails: {
-            title: string,
-            description: string,
-            buttonText: string,
-            buttonPosition: "top" | "center" | "bottom",
-            imageUrl: string
-          }
-        } = await res.json();
     
     // Simulate AI response
     setTimeout(() => {
@@ -106,20 +102,10 @@ export default function CampaignImprove() {
         ...prev,
         {
           role: 'assistant',
-          content: responseMessage.message,
+          content: "I've analyzed your request. Here's my suggestion: Consider using a more action-oriented subject line with urgency. I can also recommend updating the hero image to showcase product benefits more clearly.",
         },
       ]);
-
-      if(responseMessage.blocDetails.title || responseMessage.blocDetails.description || responseMessage.blocDetails.buttonText || responseMessage.blocDetails.buttonPosition || responseMessage.blocDetails.imageUrl) {
-        setSuggestedVersion({ 
-          title: responseMessage.blocDetails.title,
-          description: responseMessage.blocDetails.description,
-          buttonText: responseMessage.blocDetails.buttonText,
-          buttonPosition: responseMessage.blocDetails.buttonPosition,
-          image: responseMessage.blocDetails.imageUrl
-        })
-      }
-    }, 300);
+    }, 1000);
   };
 
   const handlePresetClick = (prompt: string) => {
@@ -218,157 +204,155 @@ export default function CampaignImprove() {
 
           {/* Right: Live Preview */}
           <ResizablePanel defaultSize={67} minSize={50}>
-            <div className="bg-card h-full flex flex-col">
-              <div className="p-4 border-b border-border-subtle">
-              <Tabs defaultValue="current" className="w-full">
-                <TabsList className="w-full">
-                  <TabsTrigger value="current" className="flex-1">Current version</TabsTrigger>
-                  <TabsTrigger value="suggested" className="flex-1">Suggested version</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="current" className="mt-0">
-                  <ScrollArea className="h-[calc(100vh-20rem)]">
-                    <div className="space-y-4 p-4">
-                      {/* Preview */}
-                      <div className="relative bg-white rounded-lg border border-border-subtle overflow-hidden">
-                        <img src={currentVersion.image} alt="Campaign" className="w-full h-auto object-contain" />
-                      </div>
-
-                      {/* Current metrics */}
-                      <div className="p-4 bg-muted/30 rounded-lg border border-border-subtle">
-                        <p className="text-xs text-muted-foreground mb-3 font-medium">Current Performance</p>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <p className="text-muted-foreground">Click-Through Rate</p>
-                            <p className="font-medium text-lg">{campaign.clickThroughRate}%</p>
-                            <p className="text-xs text-muted-foreground">Target: 5.0%</p>
-                          </div>
-                          <div>
-                            <p className="text-muted-foreground">Conversion Rate</p>
-                            <p className="font-medium text-lg">{campaign.conversionRate}%</p>
-                            <p className="text-xs text-muted-foreground">Target: 5.0%</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-
-                <TabsContent value="suggested" className="mt-0">
-                  <ScrollArea className="h-auto">
-                    <div className="space-y-4 p-4">
-                      {/* Preview - Side by side layout */}
-                      <div className="bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
-                        {/* <div className="grid grid-cols-2 gap-6 p-6">
-                          <div className="flex flex-col justify-center space-y-4">
-                            <h3 className="font-heading font-bold text-2xl">{suggestedVersion.title}</h3>
-                            <p className="text-muted-foreground text-sm">{suggestedVersion.description}</p>
-                            <div>
-                              <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-                                {suggestedVersion.buttonText}
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-center">
-                            <img src={suggestedVersion.image} alt="Campaign" className="max-w-full h-auto object-contain" />
-                          </div>
-                        </div> */}
-                        <section className="banner" role="region" aria-label="Promotion statut Gold ALL">
-                          <div className="banner-container">
-                            <div className="text-zone">
-                              <h1>{suggestedVersion.title}</h1>
-                              <p>{suggestedVersion.description}</p>
-                              <button className="btn" type="button"> {suggestedVersion.buttonText}</button>
-                            </div>
-                            <div className="image-zone">
-                              <img src={suggestedVersion.image} alt="Statut Gold ALL Visuel" />
-                            </div>
-                          </div>
-                        </section>
-                      </div>
-
-                      {/* Edit Form */}
-                      <div className="space-y-4">
-                        <h4 className="font-heading font-semibold text-sm">Edit Suggested Elements</h4>
-                        
-                        <div className="space-y-3">
-                          <div>
-                            <Label htmlFor="suggested-title">Title</Label>
-                            <Input
-                              id="suggested-title"
-                              value={suggestedVersion.title}
-                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, title: e.target.value })}
-                            />
+            <ResizablePanelGroup direction="vertical" className="h-full">
+              <ResizablePanel defaultSize={75} minSize={30}>
+                <div className="bg-card h-full flex flex-col">
+                  <div className="p-4 border-b border-border-subtle">
+                  <Tabs defaultValue="current" className="w-full">
+                    <TabsList className="w-full">
+                      <TabsTrigger value="current" className="flex-1">Current version</TabsTrigger>
+                      <TabsTrigger value="suggested" className="flex-1">Suggested version</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="current" className="mt-0">
+                      <ScrollArea className="h-[calc(100vh-20rem)]">
+                        <div className="space-y-4 p-4">
+                          {/* Preview */}
+                          <div className="relative bg-white rounded-lg border border-border-subtle overflow-hidden">
+                            <img src={currentVersion.image} alt="Campaign" className="w-full h-auto object-contain" />
                           </div>
 
-                          <div>
-                            <Label htmlFor="suggested-description">Description</Label>
-                            <Textarea
-                              id="suggested-description"
-                              value={suggestedVersion.description}
-                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, description: e.target.value })}
-                              rows={3}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="suggested-button-text">Button Text</Label>
-                            <Input
-                              id="suggested-button-text"
-                              value={suggestedVersion.buttonText}
-                              onChange={(e) => setSuggestedVersion({ ...suggestedVersion, buttonText: e.target.value })}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="suggested-button-position">Button Position</Label>
-                            <Select 
-                              value={suggestedVersion.buttonPosition} 
-                              onValueChange={(value: 'top' | 'center' | 'bottom') => 
-                                setSuggestedVersion({ ...suggestedVersion, buttonPosition: value })
-                              }
-                            >
-                              <SelectTrigger id="suggested-button-position">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="top">Top</SelectItem>
-                                <SelectItem value="center">Center</SelectItem>
-                                <SelectItem value="bottom">Bottom</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div>
-                            <Label htmlFor="suggested-image">Image URL</Label>
-                            <div className="flex gap-2">
-                              <Input
-                                id="suggested-image"
-                                value={suggestedVersion.image}
-                                onChange={(e) => setSuggestedVersion({ ...suggestedVersion, image: e.target.value })}
-                                placeholder="https://..."
-                              />
-                              <Button variant="outline" size="icon">
-                                <Upload className="h-4 w-4" />
-                              </Button>
+                          {/* Current metrics */}
+                          <div className="p-4 bg-muted/30 rounded-lg border border-border-subtle">
+                            <p className="text-xs text-muted-foreground mb-3 font-medium">Current Performance</p>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <p className="text-muted-foreground">Click-Through Rate</p>
+                                <p className="font-medium text-lg">{campaign.clickThroughRate}%</p>
+                                <p className="text-xs text-muted-foreground">Target: 5.0%</p>
+                              </div>
+                              <div>
+                                <p className="text-muted-foreground">Conversion Rate</p>
+                                <p className="font-medium text-lg">{campaign.conversionRate}%</p>
+                                <p className="text-xs text-muted-foreground">Target: 5.0%</p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-              </Tabs>
-            </div>
+                      </ScrollArea>
+                    </TabsContent>
 
-            <div className="p-4 border-t border-border-subtle flex items-center justify-between gap-3">
-              <Button variant="outline" size="sm">
-                Version history
-              </Button>
-              <a href='https://all.accor.com/a/fr.html?preview=17' target='_blank'><Button size="sm">Apply changes</Button></a>
-            </div>
-          </div>
-        </ResizablePanel>
+                    <TabsContent value="suggested" className="mt-0">
+                      <ScrollArea className="h-[calc(100vh-20rem)]">
+                        <div className="space-y-4 p-4">
+                          {/* Preview - Side by side layout */}
+                          <div className="bg-muted/20 rounded-lg border border-border-subtle overflow-hidden">
+                            <div className="grid grid-cols-2 gap-6 p-6">
+                              {/* Left: Text content */}
+                              <div className="flex flex-col justify-center space-y-4">
+                                <h3 className="font-heading font-bold text-2xl">{suggestedVersion.title}</h3>
+                                <p className="text-muted-foreground text-sm">{suggestedVersion.description}</p>
+                                <div>
+                                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
+                                    {suggestedVersion.buttonText}
+                                  </Button>
+                                </div>
+                              </div>
+                              {/* Right: Image */}
+                              <div className="flex items-center justify-center">
+                                <img src={suggestedVersion.image} alt="Campaign" className="max-w-full h-auto object-contain" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Edit Form */}
+                          <div className="space-y-4">
+                            <h4 className="font-heading font-semibold text-sm">Edit Suggested Elements</h4>
+                            
+                            <div className="space-y-3">
+                              <div>
+                                <Label htmlFor="suggested-title">Title</Label>
+                                <Input
+                                  id="suggested-title"
+                                  value={suggestedVersion.title}
+                                  onChange={(e) => setSuggestedVersion({ ...suggestedVersion, title: e.target.value })}
+                                />
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-description">Description</Label>
+                                <Textarea
+                                  id="suggested-description"
+                                  value={suggestedVersion.description}
+                                  onChange={(e) => setSuggestedVersion({ ...suggestedVersion, description: e.target.value })}
+                                  rows={3}
+                                />
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-button-text">Button Text</Label>
+                                <Input
+                                  id="suggested-button-text"
+                                  value={suggestedVersion.buttonText}
+                                  onChange={(e) => setSuggestedVersion({ ...suggestedVersion, buttonText: e.target.value })}
+                                />
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-button-position">Button Position</Label>
+                                <Select 
+                                  value={suggestedVersion.buttonPosition} 
+                                  onValueChange={(value: 'top' | 'center' | 'bottom') => 
+                                    setSuggestedVersion({ ...suggestedVersion, buttonPosition: value })
+                                  }
+                                >
+                                  <SelectTrigger id="suggested-button-position">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="top">Top</SelectItem>
+                                    <SelectItem value="center">Center</SelectItem>
+                                    <SelectItem value="bottom">Bottom</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              <div>
+                                <Label htmlFor="suggested-image">Image URL</Label>
+                                <div className="flex gap-2">
+                                  <Input
+                                    id="suggested-image"
+                                    value={suggestedVersion.image}
+                                    onChange={(e) => setSuggestedVersion({ ...suggestedVersion, image: e.target.value })}
+                                    placeholder="https://..."
+                                  />
+                                  <Button variant="outline" size="icon">
+                                    <Upload className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ScrollArea>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+                </div>
+              </ResizablePanel>
+
+              <ResizableHandle withHandle />
+
+              <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+                <div className="bg-card h-full p-4 border-t border-border-subtle flex items-center justify-between gap-3">
+                  <Button variant="outline" size="sm">
+                    Version history
+                  </Button>
+                  <Button size="sm">Apply changes</Button>
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
       </ResizablePanelGroup>
       </div>
     </AppShell>
