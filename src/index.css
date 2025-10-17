@@ -21,7 +21,7 @@ All colors MUST be HSL.
     --popover-foreground: 248 53% 22%;
 
     /* Primary - #1e1852 */
-    --primary: 248 53% 22%;
+    --primary: 218 53% 22%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - soft neutral */
@@ -141,7 +141,12 @@ All colors MUST be HSL.
     @apply bg-background text-foreground font-body antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading;
   }
 }
@@ -151,7 +156,7 @@ All colors MUST be HSL.
   .text-heading {
     @apply font-heading;
   }
-  
+
   .text-body {
     @apply font-body;
   }
